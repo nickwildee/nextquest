@@ -1,9 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(git:clone|pull|status|add|commit|push|checkout|branch)",
+      "Bash(pnpm:install|dev|build|start|create)",
+      "Bash(cp:*)",
+      "FileSystem(write:./**)",
+      "FileSystem(read:./**)"
     ],
     "deny": [],
-    "ask": []
+    "ask": ["Bash(rm:*)"]
   }
 }
