@@ -10,7 +10,9 @@
       "Bash(mkdir -p /c/Project/nextquest/apps)",
       "Bash(pnpm create:*)",
       "Bash(pnpm install:*)",
-      "Bash(pnpm turbo:*)"
+      "Bash(pnpm turbo:*)",
+      "Read(//c/Project/nextquest/packages//**)",
+      "Read(//c/Project/nextquest/**)"
     ],
     "deny": [],
     "ask": [

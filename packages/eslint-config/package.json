@@ -1,0 +1,24 @@
+{
+  "name": "@repo/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./nextjs": "./nextjs.js"
+  },
+  "peerDependencies": {
+    "eslint": "latest",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "@eslint/eslintrc": "latest",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint-config-next": "latest",
+    "eslint-config-prettier": "latest",
+    "eslint-config-turbo": "latest",
+    "eslint-plugin-boundaries": "latest",
+    "eslint-plugin-import": "latest",
+    "typescript-eslint": "latest"
+  }
+}
