@@ -8,7 +8,9 @@
       "FileSystem(write:./**)",
       "FileSystem(read:./**)",
       "Bash(mkdir -p /c/Project/nextquest/apps)",
-      "Bash(pnpm create:*)"
+      "Bash(pnpm create:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm turbo:*)"
     ],
     "deny": [],
     "ask": [
