@@ -6,16 +6,10 @@
       "Bash(pnpm:install|dev|build|start|create)",
       "Bash(cp:*)",
       "FileSystem(write:./**)",
-      "FileSystem(read:./**)",
-      "Bash(mkdir -p /c/Project/nextquest/apps)",
-      "Bash(pnpm create:*)",
-      "Bash(pnpm install:*)",
-      "Bash(pnpm turbo:*)"
+      "FileSystem(read:./**)"
     ],
     "deny": [],
-    "ask": [
-      "Bash(rm:*)"
-    ]
+    "ask": ["Bash(rm:*)"]
   },
   "outputStyle": "default",
   "spinnerTipsEnabled": false

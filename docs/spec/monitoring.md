@@ -8,11 +8,11 @@
 
 ## 도구 개요
 
-| 카테고리 | 도구 | 역할 | 비용 |
-|----------|------|------|------|
-| 유저 행동 분석 | Microsoft Clarity | 히트맵, 세션 레코딩, 클릭 패턴 | 무료 |
-| 이벤트/퍼널 추적 | Google Analytics 4 (GA4) | 커스텀 이벤트, 전환율, 재방문율 | 무료 (기본) |
-| 에러 모니터링 | Sentry | 런타임 에러, 크래시 로그, 환경별 에러 추적 | 무료 (5K 이벤트/월) |
+| 카테고리         | 도구                     | 역할                                       | 비용                |
+| ---------------- | ------------------------ | ------------------------------------------ | ------------------- |
+| 유저 행동 분석   | Microsoft Clarity        | 히트맵, 세션 레코딩, 클릭 패턴             | 무료                |
+| 이벤트/퍼널 추적 | Google Analytics 4 (GA4) | 커스텀 이벤트, 전환율, 재방문율            | 무료 (기본)         |
+| 에러 모니터링    | Sentry                   | 런타임 에러, 크래시 로그, 환경별 에러 추적 | 무료 (5K 이벤트/월) |
 
 ---
 
@@ -30,6 +30,7 @@
 - **스크롤 히트맵**: 페이지 스크롤 깊이 분석
 
 **활용**:
+
 - 랜딩 페이지 섹션별 클릭 집중 영역 파악
 - "Steam에서 구매하기" 버튼 클릭률 분석
 - 불필요한 콘텐츠 식별 (스크롤 안 되는 영역)
@@ -40,6 +41,7 @@
 - 마우스 움직임, 클릭, 스크롤 재생
 
 **활용**:
+
 - AI 추천 선택지에서 어디서 이탈하는지 확인
 - 게임 상세 페이지에서 어떤 섹션을 주로 보는지 파악
 
@@ -49,6 +51,7 @@
 - **분노 클릭**: 같은 위치를 짧은 시간에 여러 번 클릭
 
 **활용**:
+
 - UI 혼란 지점 발견
 - 버튼 디자인 개선 필요 영역 파악
 
@@ -58,11 +61,18 @@
 <!-- app/layout.tsx 또는 _document.tsx -->
 <head>
   <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "YOUR_CLARITY_PROJECT_ID");
+    (function (c, l, a, r, i, t, y) {
+      c[a] =
+        c[a] ||
+        function () {
+          (c[a].q = c[a].q || []).push(arguments);
+        };
+      t = l.createElement(r);
+      t.async = 1;
+      t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', 'YOUR_CLARITY_PROJECT_ID');
   </script>
 </head>
 ```
@@ -77,16 +87,16 @@
 
 ### 추적 지표
 
-| 카테고리 | 지표 | 설명 |
-|----------|------|------|
-| 트래픽 | 페이지뷰 / 세션 수 | 전체 방문 규모 파악 |
-| 트래픽 | 유입 경로 (Referrer) | 사용자가 어디서 유입되었는지 |
-| 전환 | Steam 로그인 전환율 | 비로그인 → 로그인 전환 비율 |
-| AI 추천 | 추천 완료율 | 선택지 시작 → 결과까지 완료한 비율 |
-| AI 추천 | 추천 결과 클릭률 | 추천 결과에서 게임 상세 페이지 진입 비율 |
-| 랜딩 | 섹션별 클릭률 | 어느 섹션(할인/인기/장르별)에서 클릭이 많은지 |
-| 이탈 | Steam 스토어 외부 링크 클릭 수 | 실제 구매 의향 간접 측정 |
-| 리텐션 | 재방문율 | 7일 내 재방문 비율 |
+| 카테고리 | 지표                           | 설명                                          |
+| -------- | ------------------------------ | --------------------------------------------- |
+| 트래픽   | 페이지뷰 / 세션 수             | 전체 방문 규모 파악                           |
+| 트래픽   | 유입 경로 (Referrer)           | 사용자가 어디서 유입되었는지                  |
+| 전환     | Steam 로그인 전환율            | 비로그인 → 로그인 전환 비율                   |
+| AI 추천  | 추천 완료율                    | 선택지 시작 → 결과까지 완료한 비율            |
+| AI 추천  | 추천 결과 클릭률               | 추천 결과에서 게임 상세 페이지 진입 비율      |
+| 랜딩     | 섹션별 클릭률                  | 어느 섹션(할인/인기/장르별)에서 클릭이 많은지 |
+| 이탈     | Steam 스토어 외부 링크 클릭 수 | 실제 구매 의향 간접 측정                      |
+| 리텐션   | 재방문율                       | 7일 내 재방문 비율                            |
 
 ### 커스텀 이벤트
 
@@ -107,20 +117,20 @@ trackEvent('recommend_start', {
   genre: selectedGenre,
   price_range: selectedPrice,
   pc_spec: selectedSpec,
-  playtime: selectedPlaytime
+  playtime: selectedPlaytime,
 });
 
 // 추천 완료
 trackEvent('recommend_complete', {
   result_count: recommendations.length,
-  duration_ms: elapsed
+  duration_ms: elapsed,
 });
 
 // 추천 결과 클릭
 trackEvent('recommend_click', {
   game_id: gameId,
   rank: index + 1,
-  score: game.score
+  score: game.score,
 });
 ```
 
@@ -130,7 +140,7 @@ trackEvent('recommend_click', {
 trackEvent('game_detail_view', {
   game_id: gameId,
   game_name: game.name,
-  source: referrer // 'landing', 'recommend', 'mypage', 'direct'
+  source: referrer, // 'landing', 'recommend', 'mypage', 'direct'
 });
 ```
 
@@ -141,7 +151,7 @@ trackEvent('steam_store_click', {
   game_id: gameId,
   game_name: game.name,
   price: game.price,
-  discount_percent: game.discount_percent
+  discount_percent: game.discount_percent,
 });
 ```
 
@@ -150,13 +160,13 @@ trackEvent('steam_store_click', {
 ```typescript
 // 로그인 버튼 클릭
 trackEvent('login_click', {
-  source: source // 'navigation', 'recommend_page'
+  source: source, // 'navigation', 'recommend_page'
 });
 
 // 로그인 성공
 trackEvent('login_success', {
   steam_id: steamId,
-  is_new_user: isNewUser
+  is_new_user: isNewUser,
 });
 ```
 
@@ -168,7 +178,9 @@ trackEvent('login_success', {
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA4_ID"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() {
+      dataLayer.push(arguments);
+    }
     gtag('js', new Date());
     gtag('config', 'G-YOUR_GA4_ID', {
       page_path: window.location.pathname,
@@ -235,7 +247,7 @@ Sentry.init({
       delete event.request.cookies;
     }
     return event;
-  }
+  },
 });
 ```
 
@@ -250,9 +262,9 @@ Sentry.init({
   environment: process.env.NODE_ENV,
   integrations: [
     new Sentry.Integrations.Http({ tracing: true }),
-    new Sentry.Integrations.Postgres()
+    new Sentry.Integrations.Postgres(),
   ],
-  tracesSampleRate: 0.1
+  tracesSampleRate: 0.1,
 });
 
 app.use(Sentry.Handlers.requestHandler());
@@ -299,14 +311,14 @@ try {
   Sentry.captureException(error, {
     tags: {
       api: 'ai_recommendation',
-      model: 'gpt-4o-mini'
+      model: 'gpt-4o-mini',
     },
     contexts: {
       request: {
         user_preferences: preferences,
-        candidate_count: candidates.length
-      }
-    }
+        candidate_count: candidates.length,
+      },
+    },
   });
   throw error;
 }
@@ -318,11 +330,11 @@ try {
 
 ### 주요 지표
 
-| 지표 | 의미 | 목표 |
-|------|------|------|
+| 지표                           | 의미                    | 목표    |
+| ------------------------------ | ----------------------- | ------- |
 | LCP (Largest Contentful Paint) | 최대 콘텐츠 렌더링 시간 | < 2.5초 |
-| FID (First Input Delay) | 첫 입력 지연 시간 | < 100ms |
-| CLS (Cumulative Layout Shift) | 누적 레이아웃 이동 | < 0.1 |
+| FID (First Input Delay)        | 첫 입력 지연 시간       | < 100ms |
+| CLS (Cumulative Layout Shift)  | 누적 레이아웃 이동      | < 0.1   |
 
 ### 측정
 
@@ -407,7 +419,7 @@ beforeSend(event) {
 
 ```javascript
 gtag('config', 'G-YOUR_GA4_ID', {
-  anonymize_ip: true
+  anonymize_ip: true,
 });
 ```
 

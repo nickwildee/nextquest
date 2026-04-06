@@ -162,7 +162,7 @@ pnpm dev
 프로젝트에 기여하기 전에 다음 규칙들을 확인해주세요:
 
 - **커밋 메시지 컨벤션**: Feat, Fix, Docs, Style, Refactor, Test, Chore
-- **브랜치 전략**: Git Flow (main, develop, feature/*, hotfix/*)
+- **브랜치 전략**: Git Flow (main, develop, feature/_, hotfix/_)
 - **코딩 스타일**: camelCase (변수/함수), PascalCase (컴포넌트), UPPER_SNAKE_CASE (상수)
 - **폴더 구조**: Feature-Sliced Design (FSD)
 
@@ -175,21 +175,25 @@ pnpm dev
 프로젝트의 상세한 기획 및 구현 내용은 다음 문서들을 참고하세요:
 
 ### 프로젝트 관리
+
 - [프로젝트 개요](./docs/spec/overview.md)
 - [개발 로드맵](./docs/roadmap.md)
 - [기여 가이드](./docs/CONTRIBUTING.md)
 
 ### 시스템 설계
+
 - [시스템 아키텍처](./docs/spec/architecture.md)
 - [보안 정책](./docs/spec/security.md)
 - [모니터링 전략](./docs/spec/monitoring.md)
 
 ### 기능 명세
+
 - [AI 추천 기능](./docs/spec/features/ai-recommendation.md)
 - [인증 시스템](./docs/spec/features/authentication.md)
 - [데이터 파이프라인](./docs/spec/features/data-pipeline.md)
 
 ### 페이지 명세
+
 - [랜딩 페이지](./docs/spec/pages/landing.md)
 - [AI 추천 페이지](./docs/spec/pages/recommend.md)
 - [게임 상세 페이지](./docs/spec/pages/game-detail.md)

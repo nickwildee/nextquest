@@ -13,6 +13,7 @@
 ```
 
 **예시**:
+
 - `/game/570` - Dota 2
 - `/game/730` - Counter-Strike 2
 
@@ -44,6 +45,7 @@
 ### 2. 스크린샷 갤러리
 
 **UI**:
+
 - 가로 스크롤 또는 그리드 레이아웃
 - 클릭 시 라이트박스 (전체 화면)
 - 5-10개 스크린샷
@@ -82,6 +84,7 @@
 ```
 
 **HTML 정리**:
+
 - Steam API는 HTML 태그 포함한 설명 제공
 - `dangerouslySetInnerHTML` 사용 시 XSS 방지 (DOMPurify)
 
@@ -115,6 +118,7 @@ GET https://www.googleapis.com/youtube/v3/search
 ```
 
 **대체 검색어**:
+
 - 1순위: `[게임명] gameplay`
 - 2순위 (결과 없을 시): `[게임명] review`
 - 3순위: `[게임명] trailer`
@@ -173,12 +177,12 @@ GET https://www.googleapis.com/youtube/v3/search
 
 **표 형식**:
 
-| 항목 | 내용 |
-|------|------|
-| 개발사 | [개발사명] |
-| 배급사 | [배급사명] |
-| 출시일 | 2023년 1월 15일 |
-| 장르 | Action, FPS, Shooter |
+| 항목      | 내용                    |
+| --------- | ----------------------- |
+| 개발사    | [개발사명]              |
+| 배급사    | [배급사명]              |
+| 출시일    | 2023년 1월 15일         |
+| 장르      | Action, FPS, Shooter    |
 | 지원 언어 | 한국어, English, 日本語 |
 
 ---
@@ -197,6 +201,7 @@ GET https://www.googleapis.com/youtube/v3/search
 ```
 
 **Steam 스토어 링크**:
+
 ```
 https://store.steampowered.com/app/[APP_ID]
 ```
@@ -271,7 +276,7 @@ import Image from 'next/image';
   height={300}
   priority // Above the fold
   placeholder="blur"
-/>
+/>;
 ```
 
 ### YouTube API 캐싱
@@ -296,7 +301,7 @@ const { data: videos } = useQuery({
 gtag('event', 'game_detail_view', {
   game_id: gameId,
   game_name: game.name,
-  source: referrer // 'landing', 'recommend', 'direct'
+  source: referrer, // 'landing', 'recommend', 'direct'
 });
 
 // Steam 스토어 링크 클릭
@@ -304,13 +309,13 @@ gtag('event', 'steam_store_click', {
   game_id: gameId,
   game_name: game.name,
   price: game.price,
-  discount_percent: game.discount_percent
+  discount_percent: game.discount_percent,
 });
 
 // YouTube 영상 재생
 gtag('event', 'video_play', {
   game_id: gameId,
-  video_id: videoId
+  video_id: videoId,
 });
 ```
 

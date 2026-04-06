@@ -42,6 +42,7 @@ Steam 로그인 필수. 유저의 Steam 프로필 정보와 소유 게임 라이
 ```
 
 **데이터 소스**:
+
 - `users` 테이블: steam_id, display_name, avatar_url, last_login
 - `user_games` 테이블 집계: 총 게임 수, 총 플레이타임
 
@@ -62,12 +63,14 @@ Steam 로그인 필수. 유저의 Steam 프로필 정보와 소유 게임 라이
 ```
 
 **정렬 옵션**:
+
 - 플레이타임 많은순 (기본)
 - 플레이타임 적은순
 - 게임명 가나다순
 - 최근 플레이순
 
 **필터 옵션**:
+
 - 전체 장르
 - FPS
 - RPG
@@ -89,6 +92,7 @@ Steam 로그인 필수. 유저의 Steam 프로필 정보와 소유 게임 라이
 ```
 
 **리스트 형태**:
+
 - 페이지네이션 (페이지당 20개)
 - 또는 무한 스크롤 (Intersection Observer)
 
@@ -219,9 +223,7 @@ const sortedGames = useMemo(() => {
 
   // 장르 필터
   if (genreFilter) {
-    result = result.filter(game =>
-      game.genres.some(g => g.description === genreFilter)
-    );
+    result = result.filter(game => game.genres.some(g => g.description === genreFilter));
   }
 
   // 정렬
@@ -294,11 +296,11 @@ const { data: userGames, isLoading } = useQuery({
 
 ## 에러 처리
 
-| 에러 상황 | 처리 방법 |
-|-----------|-----------|
+| 에러 상황               | 처리 방법                                           |
+| ----------------------- | --------------------------------------------------- |
 | Steam 라이브러리 비공개 | "게임 라이브러리가 비공개로 설정되어 있습니다" 안내 |
-| Steam API 조회 실패 | "Steam 서버 연결 실패. 잠시 후 다시 시도해주세요" |
-| 세션 만료 | 자동으로 로그인 페이지로 리다이렉트 |
+| Steam API 조회 실패     | "Steam 서버 연결 실패. 잠시 후 다시 시도해주세요"   |
+| 세션 만료               | 자동으로 로그인 페이지로 리다이렉트                 |
 
 ---
 
@@ -309,19 +311,19 @@ const { data: userGames, isLoading } = useQuery({
 gtag('event', 'mypage_view', {
   user_id: userId,
   total_games: userGames.length,
-  total_playtime_hours: totalPlaytime
+  total_playtime_hours: totalPlaytime,
 });
 
 // 게임 상세 페이지 진입 (마이페이지에서)
 gtag('event', 'game_detail_view', {
   game_id: gameId,
-  source: 'mypage'
+  source: 'mypage',
 });
 
 // Steam에서 실행 클릭
 gtag('event', 'steam_launch_click', {
   game_id: gameId,
-  playtime_hours: game.playtime_hours
+  playtime_hours: game.playtime_hours,
 });
 ```
 
