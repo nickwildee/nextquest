@@ -7,18 +7,21 @@
     "./nextjs": "./nextjs.js"
   },
   "peerDependencies": {
-    "eslint": "latest",
-    "typescript": "latest"
+    "eslint": ">=8",
+    "typescript": ">=5"
   },
   "dependencies": {
-    "@eslint/eslintrc": "latest",
-    "@typescript-eslint/eslint-plugin": "latest",
-    "@typescript-eslint/parser": "latest",
-    "eslint-config-next": "latest",
+    "@next/eslint-plugin-next": "latest",
     "eslint-config-prettier": "latest",
     "eslint-config-turbo": "latest",
     "eslint-plugin-boundaries": "latest",
+    "eslint-import-resolver-typescript": "latest",
     "eslint-plugin-import": "latest",
     "typescript-eslint": "latest"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "prettier": "latest"
   }
 }

@@ -1,64 +1,71 @@
-import { FlatCompat } from '@eslint/eslintrc'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import nextPlugin from '@next/eslint-plugin-next'
+import turboConfig from 'eslint-config-turbo/flat'
 import boundaries from 'eslint-plugin-boundaries'
 import pluginImport from 'eslint-plugin-import'
 import tseslint from 'typescript-eslint'
 import prettierConfig from 'eslint-config-prettier'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-const compat = new FlatCompat({ baseDirectory: __dirname })
-
 /** @type {import('typescript-eslint').Config} */
 const config = [
-  ...compat.extends('next/core-web-vitals'),
+  { ignores: ['.next/**', 'node_modules/**', 'dist/**'] },
+  nextPlugin.configs['core-web-vitals'],
   ...tseslint.configs.recommended,
-  ...compat.extends('turbo'),
+  ...turboConfig,
   {
     plugins: {
       import: pluginImport,
       boundaries,
     },
     settings: {
+      'import/resolver': {
+        typescript: true,
+        node: true,
+      },
       'boundaries/elements': [
-        { type: 'app',      pattern: ['src/app', 'app'] },
-        { type: 'widgets',  pattern: ['src/widgets', 'widgets'] },
-        { type: 'features', pattern: ['src/features', 'features'] },
-        { type: 'entities', pattern: ['src/entities', 'entities'] },
-        { type: 'shared',   pattern: ['src/shared', 'shared'] },
+        { type: 'app',      pattern: 'src/app/**' },
+        { type: 'widgets',  pattern: 'src/widgets/**' },
+        { type: 'features', pattern: 'src/features/**' },
+        { type: 'entities', pattern: 'src/entities/**' },
+        { type: 'shared',   pattern: 'src/shared/**' },
       ],
       'boundaries/ignore': ['**/*.test.*', '**/*.spec.*', '**/*.stories.*'],
     },
     rules: {
-      // FSD 단방향 의존성
-      'boundaries/element-types': [
-        'error',
-        {
-          default: 'disallow',
-          rules: [
-            { from: 'app',      allow: ['widgets', 'features', 'entities', 'shared'] },
-            { from: 'widgets',  allow: ['features', 'entities', 'shared'] },
-            { from: 'features', allow: ['entities', 'shared'] },
-            { from: 'entities', allow: ['shared'] },
-            { from: 'shared',   allow: [] },
-          ],
-        },
-      ],
-
-      // 슬라이스 간 교차 import 금지 (같은 레이어 내)
-      'boundaries/no-unknown': 'error',
-
-      // import 정렬
+      // import 정렬: 외부 패키지 → 내부 FSD 레이어 순
       'import/order': [
         'warn',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          pathGroups: [
+            { pattern: '@/app/**',      group: 'internal', position: 'before' },
+            { pattern: '@/widgets/**',  group: 'internal', position: 'before' },
+            { pattern: '@/features/**', group: 'internal', position: 'before' },
+            { pattern: '@/entities/**', group: 'internal', position: 'before' },
+            { pattern: '@/shared/**',   group: 'internal', position: 'before' },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin', 'external'],
           'newlines-between': 'always',
           alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
+
+      // FSD 단방향 의존성 강제
+      'boundaries/dependencies': [
+        'error',
+        {
+          default: 'disallow',
+          rules: [
+            { from: { type: 'app' },      allow: [{ to: { type: 'widgets' } }, { to: { type: 'features' } }, { to: { type: 'entities' } }, { to: { type: 'shared' } }] },
+            { from: { type: 'widgets' },  allow: [{ to: { type: 'features' } }, { to: { type: 'entities' } }, { to: { type: 'shared' } }] },
+            { from: { type: 'features' }, allow: [{ to: { type: 'entities' } }, { to: { type: 'shared' } }] },
+            { from: { type: 'entities' }, allow: [{ to: { type: 'shared' } }] },
+            { from: { type: 'shared' },   allow: [] },
+          ],
+        },
+      ],
+
+      // 미등록 경로에서의 import 금지
+      'boundaries/no-unknown': 'error',
     },
   },
 
