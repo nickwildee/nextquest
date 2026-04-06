@@ -9,6 +9,10 @@
       "FileSystem(read:./**)"
     ],
     "deny": [],
-    "ask": ["Bash(rm:*)"]
-  }
+    "ask": [
+      "Bash(rm:*)"
+    ]
+  },
+  "outputStyle": "default",
+  "spinnerTipsEnabled": false
 }

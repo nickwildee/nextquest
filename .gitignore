@@ -1,0 +1,83 @@
+# ===========================
+# [ OS & Editors ]
+# ===========================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.stackdump
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===========================
+# [ Dependencies ]
+# ===========================
+node_modules/
+.pnpm-store/
+pnpm-debug.log*
+
+# ===========================
+# [ Next.js & Frontend ]
+# ===========================
+.next/
+out/
+dist/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+# ===========================
+# [ Environment Variables ]
+# ===========================
+.env
+.env.local
+.env*.local
+.env.development
+.env.production
+.env.test
+
+# ===========================
+# [ Backend & DB ]
+# ===========================
+*.dump
+*_backup.sql
+pgdata/
+*.log
+
+# ===========================
+# [ Testing ]
+# ===========================
+coverage/
+
+# ===========================
+# [ 배포 ]
+# ===========================
+.vercel/
+
+# ===========================
+# [ 캐시 ]
+# ===========================
+.eslintcache
