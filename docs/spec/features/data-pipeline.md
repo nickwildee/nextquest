@@ -33,12 +33,13 @@ GET https://api.steampowered.com/ISteamApps/GetAppList/v2/
 ```
 
 **응답**:
+
 ```json
 {
   "applist": {
     "apps": [
-      {"appid": 570, "name": "Dota 2"},
-      {"appid": 730, "name": "Counter-Strike 2"}
+      { "appid": 570, "name": "Dota 2" },
+      { "appid": 730, "name": "Counter-Strike 2" }
     ]
   }
 }
@@ -51,28 +52,30 @@ GET https://store.steampowered.com/api/appdetails?appids=[APP_ID]&cc=kr&l=korean
 ```
 
 **파라미터**:
+
 - `appids`: 게임 ID
 - `cc=kr`: 한국 가격 정보
 - `l=korean`: 한국어 설명
 
 **수집 항목**:
+
 ```json
 {
   "type": "game",
   "name": "게임 제목",
   "short_description": "짧은 설명",
   "detailed_description": "상세 설명",
-  "genres": [{"id": "1", "description": "Action"}],
-  "categories": [{"id": 1, "description": "Multi-player"}],
+  "genres": [{ "id": "1", "description": "Action" }],
+  "categories": [{ "id": 1, "description": "Multi-player" }],
   "price_overview": {
     "final": 15000,
     "discount_percent": 50,
     "initial": 30000
   },
-  "release_date": {"date": "2023-01-15"},
-  "screenshots": [{"path_full": "https://..."}],
-  "movies": [{"webm": {"480": "https://..."}}],
-  "recommendations": {"total": 125000},
+  "release_date": { "date": "2023-01-15" },
+  "screenshots": [{ "path_full": "https://..." }],
+  "movies": [{ "webm": { "480": "https://..." } }],
+  "recommendations": { "total": 125000 },
   "pc_requirements": {
     "minimum": "OS: Windows 10...",
     "recommended": "OS: Windows 11..."
@@ -84,21 +87,21 @@ GET https://store.steampowered.com/api/appdetails?appids=[APP_ID]&cc=kr&l=korean
 
 ## 수집 항목 상세
 
-| 항목 | 필드명 | 타입 | 용도 |
-|------|--------|------|------|
-| 게임 ID | appid | integer | Primary Key |
-| 제목 | name | string | 게임명 표시 |
-| 설명 | short_description | text | 카드 미리보기 |
-| 장르 | genres | json | 필터링, AI 추천 |
-| 태그 | categories | json | 세부 필터링 |
-| 가격 | price_overview.final | integer | 필터링, 표시 (원화) |
-| 할인율 | price_overview.discount_percent | integer | 할인 섹션 필터링 |
-| 할인 종료일 | N/A (추가 계산 필요) | timestamp | 할인 종료 임박 표시 |
-| 리뷰 수 | recommendations.total | integer | 인기도 지표 |
-| 긍정 리뷰 비율 | N/A (Steam Reviews API) | float | 품질 지표 |
-| 스크린샷 | screenshots | json | 상세 페이지 갤러리 |
-| 출시일 | release_date.date | date | 필터링, 정렬 |
-| 시스템 요구사양 | pc_requirements | json | PC 사양 필터링 |
+| 항목            | 필드명                          | 타입      | 용도                |
+| --------------- | ------------------------------- | --------- | ------------------- |
+| 게임 ID         | appid                           | integer   | Primary Key         |
+| 제목            | name                            | string    | 게임명 표시         |
+| 설명            | short_description               | text      | 카드 미리보기       |
+| 장르            | genres                          | json      | 필터링, AI 추천     |
+| 태그            | categories                      | json      | 세부 필터링         |
+| 가격            | price_overview.final            | integer   | 필터링, 표시 (원화) |
+| 할인율          | price_overview.discount_percent | integer   | 할인 섹션 필터링    |
+| 할인 종료일     | N/A (추가 계산 필요)            | timestamp | 할인 종료 임박 표시 |
+| 리뷰 수         | recommendations.total           | integer   | 인기도 지표         |
+| 긍정 리뷰 비율  | N/A (Steam Reviews API)         | float     | 품질 지표           |
+| 스크린샷        | screenshots                     | json      | 상세 페이지 갤러리  |
+| 출시일          | release_date.date               | date      | 필터링, 정렬        |
+| 시스템 요구사양 | pc_requirements                 | json      | PC 사양 필터링      |
 
 ---
 
@@ -111,6 +114,7 @@ GET https://store.steampowered.com/appreviews/[APP_ID]?json=1&language=all&purch
 ```
 
 **수집**:
+
 ```json
 {
   "query_summary": {
@@ -124,6 +128,7 @@ GET https://store.steampowered.com/appreviews/[APP_ID]?json=1&language=all&purch
 ```
 
 **긍정 비율 계산**:
+
 ```
 positive_ratio = total_positive / total_reviews
 ```
@@ -135,6 +140,7 @@ positive_ratio = total_positive / total_reviews
 ### 구현 방식
 
 **Phase 1 (Node.js)**:
+
 ```javascript
 import cron from 'node-cron';
 
@@ -146,6 +152,7 @@ cron.schedule('0 3 * * 1,4', async () => {
 ```
 
 **Phase 2 (Spring)**:
+
 ```java
 @Scheduled(cron = "0 0 3 * * MON,THU")
 public void updateGameData() {
@@ -190,9 +197,7 @@ import pLimit from 'p-limit';
 const limit = pLimit(10); // 동시 10개 요청
 
 const games = await getAllGames();
-const promises = games.map(game =>
-  limit(() => fetchGameDetails(game.appid))
-);
+const promises = games.map(game => limit(() => fetchGameDetails(game.appid)));
 
 await Promise.all(promises);
 ```
@@ -236,12 +241,12 @@ if (!data.price_overview) {
 
 ### 3. 에러 핸들링
 
-| 에러 상황 | 처리 방법 |
-|-----------|-----------|
-| API 타임아웃 | 지수 백오프로 3회 재시도 후 스킵, 로그 기록 |
-| 잘못된 JSON | 스킵, 에러 로그 |
-| 404 (게임 없음) | DB에서 비활성화 처리 |
-| Rate Limit 초과 | 지수 백오프 적용 (10초 → 20초 → 40초) |
+| 에러 상황       | 처리 방법                                   |
+| --------------- | ------------------------------------------- |
+| API 타임아웃    | 지수 백오프로 3회 재시도 후 스킵, 로그 기록 |
+| 잘못된 JSON     | 스킵, 에러 로그                             |
+| 404 (게임 없음) | DB에서 비활성화 처리                        |
+| Rate Limit 초과 | 지수 백오프 적용 (10초 → 20초 → 40초)       |
 
 #### 지수 백오프 재시도 로직
 
@@ -271,6 +276,7 @@ async function fetchWithRetry(appid, maxRetries = 3) {
 ```
 
 **재시도 간격**:
+
 - 일반 에러: 1초 → 2초 → 4초
 - Rate Limit: 10초 → 20초 → 40초
 

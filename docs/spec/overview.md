@@ -10,24 +10,24 @@ AI 기반 Steam 게임 추천 + 할인 게임 브라우징 서비스.
 
 ## 타겟 유저
 
-| 유저 유형 | 진입 동기 |
-|-----------|-----------|
-| 라이트 유저 | 스트리머 영상 또는 과거 플레이 경험으로 "비슷한 게임 없나?" 탐색 |
-| 할인 게임 헌터 | 눈여겨봤던 게임 할인 여부 확인, 할인 목록에서 괜찮은 게임 발굴 |
+| 유저 유형      | 진입 동기                                                        |
+| -------------- | ---------------------------------------------------------------- |
+| 라이트 유저    | 스트리머 영상 또는 과거 플레이 경험으로 "비슷한 게임 없나?" 탐색 |
+| 할인 게임 헌터 | 눈여겨봤던 게임 할인 여부 확인, 할인 목록에서 괜찮은 게임 발굴   |
 
 ---
 
 ## 기술 스택
 
-| 영역 | 기술 |
-|------|------|
-| Frontend | Next.js (SSR 중심) |
-| Backend | Node.js (1차) → Java/Spring 마이그레이션 (2차) |
-| Database | PostgreSQL |
-| AI | 경량 API 모델 (GPT-4o-mini / Claude Haiku / Gemini Flash 중 비용 비교 후 확정) |
-| 상태 관리 | TanStack Query (추천 결과 캐싱 포함) |
-| 인증 | Steam OpenID |
-| 외부 API | Steam Web API, YouTube Data API v3 |
+| 영역      | 기술                                                                           |
+| --------- | ------------------------------------------------------------------------------ |
+| Frontend  | Next.js (SSR 중심)                                                             |
+| Backend   | Node.js (1차) → Java/Spring 마이그레이션 (2차)                                 |
+| Database  | PostgreSQL                                                                     |
+| AI        | 경량 API 모델 (GPT-4o-mini / Claude Haiku / Gemini Flash 중 비용 비교 후 확정) |
+| 상태 관리 | TanStack Query (추천 결과 캐싱 포함)                                           |
+| 인증      | Steam OpenID                                                                   |
+| 외부 API  | Steam Web API, YouTube Data API v3                                             |
 
 ---
 

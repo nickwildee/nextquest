@@ -96,20 +96,15 @@ const PRICE_OPTIONS = [
   { label: '10,000원 이하', value: 10000 },
   { label: '20,000원 이하', value: 20000 },
   { label: '30,000원 이하', value: 30000 },
-  { label: '50,000원 이하', value: 50000 }
+  { label: '50,000원 이하', value: 50000 },
 ];
 
-const SPEC_OPTIONS = [
-  'RTX 20 시리즈',
-  'RTX 30 시리즈',
-  'RTX 40 시리즈',
-  'Mac'
-];
+const SPEC_OPTIONS = ['RTX 20 시리즈', 'RTX 30 시리즈', 'RTX 40 시리즈', 'Mac'];
 
 const PLAYTIME_OPTIONS = [
   { label: '50시간 이내', value: '<50h' },
   { label: '50-100시간', value: '50-100h' },
-  { label: '100시간 이상', value: '>100h' }
+  { label: '100시간 이상', value: '>100h' },
 ];
 ```
 
@@ -270,12 +265,12 @@ if (error.code === 'RATE_LIMIT_EXCEEDED') {
 
 ## 에러 처리
 
-| 에러 상황 | 메시지 | 액션 |
-|-----------|--------|------|
-| AI API 타임아웃 | "AI 분석에 실패했습니다" | "다시 시도" 버튼 |
-| Rate Limit 초과 | "일일 추천 횟수 초과" | 다음 가능 시간 표시 + 이전 결과 보기 |
-| Steam 라이브러리 조회 실패 | "게임 라이브러리를 불러올 수 없습니다" | "재로그인" 버튼 |
-| 네트워크 오류 | "연결에 실패했습니다" | "다시 시도" 버튼 |
+| 에러 상황                  | 메시지                                 | 액션                                 |
+| -------------------------- | -------------------------------------- | ------------------------------------ |
+| AI API 타임아웃            | "AI 분석에 실패했습니다"               | "다시 시도" 버튼                     |
+| Rate Limit 초과            | "일일 추천 횟수 초과"                  | 다음 가능 시간 표시 + 이전 결과 보기 |
+| Steam 라이브러리 조회 실패 | "게임 라이브러리를 불러올 수 없습니다" | "재로그인" 버튼                      |
+| 네트워크 오류              | "연결에 실패했습니다"                  | "다시 시도" 버튼                     |
 
 ---
 
@@ -287,20 +282,20 @@ gtag('event', 'recommend_start', {
   genre: selectedGenre,
   price_range: selectedPrice,
   pc_spec: selectedSpec,
-  playtime: selectedPlaytime
+  playtime: selectedPlaytime,
 });
 
 // 추천 완료
 gtag('event', 'recommend_complete', {
   result_count: recommendations.length,
-  duration_ms: elapsed
+  duration_ms: elapsed,
 });
 
 // 추천 결과 클릭
 gtag('event', 'recommend_click', {
   game_id: gameId,
   rank: index + 1,
-  score: game.score
+  score: game.score,
 });
 ```
 

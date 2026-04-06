@@ -42,6 +42,7 @@ POST /api/auth/steam/login
 ```
 
 **처리**:
+
 - Steam OpenID Provider URL 생성
 - `return_to` 파라미터에 콜백 URL 설정
 - Steam 로그인 페이지로 리다이렉트
@@ -53,6 +54,7 @@ GET /api/auth/steam/callback?openid.*
 ```
 
 **처리**:
+
 1. `openid.signed` 필드를 Steam 서버에 직접 검증 요청
 2. 검증 성공 시 `openid.claimed_id`에서 Steam ID 추출
 3. Steam Web API 호출:
@@ -69,6 +71,7 @@ POST /api/auth/logout
 ```
 
 **처리**:
+
 - 세션 삭제
 - 쿠키 제거
 - 200 OK 반환
@@ -80,6 +83,7 @@ GET /api/auth/me
 ```
 
 **응답**:
+
 ```json
 {
   "steam_id": "76561198012345678",
@@ -124,15 +128,13 @@ GET /api/auth/me
 **위협**: 콜백 URL 위조 공격
 
 **방어**:
+
 - `openid.signed` 필드를 Steam 서버에 직접 재검증 요청
 - 응답이 `is_valid:true`인 경우만 인증 성공 처리
 - 콜백 도메인 화이트리스트 설정
 
 ```javascript
-const ALLOWED_CALLBACK_DOMAINS = [
-  'https://yourdomain.com',
-  'https://www.yourdomain.com'
-];
+const ALLOWED_CALLBACK_DOMAINS = ['https://yourdomain.com', 'https://www.yourdomain.com'];
 
 // 콜백 URL 검증
 if (!ALLOWED_CALLBACK_DOMAINS.includes(new URL(callbackUrl).origin)) {
@@ -144,11 +146,13 @@ if (!ALLOWED_CALLBACK_DOMAINS.includes(new URL(callbackUrl).origin)) {
 
 ```javascript
 // backend
-app.use(cors({
-  origin: ['https://yourdomain.com', 'https://www.yourdomain.com'],
-  credentials: true,
-  methods: ['GET', 'POST']
-}));
+app.use(
+  cors({
+    origin: ['https://yourdomain.com', 'https://www.yourdomain.com'],
+    credentials: true,
+    methods: ['GET', 'POST'],
+  })
+);
 ```
 
 **주의**: 와일드카드(`*`) 사용 금지
@@ -191,6 +195,7 @@ GET https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/
 ```
 
 **수집 데이터**:
+
 - Steam ID
 - 닉네임
 - 아바타 URL
@@ -207,6 +212,7 @@ GET https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/
 ```
 
 **수집 데이터**:
+
 - 게임 ID
 - 게임명
 - 플레이타임 (분 단위)
@@ -215,6 +221,7 @@ GET https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/
 ### DB 저장
 
 #### users 테이블
+
 ```sql
 INSERT INTO users (steam_id, display_name, avatar_url, last_login)
 VALUES (?, ?, ?, NOW())
@@ -226,6 +233,7 @@ DO UPDATE SET
 ```
 
 #### user_games 테이블
+
 ```sql
 -- 기존 데이터 삭제 후 재삽입 (전체 동기화)
 DELETE FROM user_games WHERE steam_id = ?;
@@ -238,12 +246,12 @@ VALUES (?, ?, ?), (?, ?, ?), ...;
 
 ## 에러 처리
 
-| 에러 상황 | 처리 방법 |
-|-----------|-----------|
-| Steam API 응답 실패 | 재시도 후 실패 시 에러 페이지 표시 |
-| 콜백 검증 실패 | 로그인 실패 메시지 + 재시도 안내 |
-| 프로필 비공개 | 게임 라이브러리 조회 불가 안내 (AI 추천 제한) |
-| 세션 만료 | 401 → 로그인 페이지로 리다이렉트 |
+| 에러 상황           | 처리 방법                                     |
+| ------------------- | --------------------------------------------- |
+| Steam API 응답 실패 | 재시도 후 실패 시 에러 페이지 표시            |
+| 콜백 검증 실패      | 로그인 실패 메시지 + 재시도 안내              |
+| 프로필 비공개       | 게임 라이브러리 조회 불가 안내 (AI 추천 제한) |
+| 세션 만료           | 401 → 로그인 페이지로 리다이렉트              |
 
 ---
 

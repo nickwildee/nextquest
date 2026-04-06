@@ -10,8 +10,8 @@
 
 ### AI 추천 API
 
-| 대상 | 제한 | 기준 | 검증 위치 |
-|------|------|------|-----------|
+| 대상        | 제한    | 기준     | 검증 위치            |
+| ----------- | ------- | -------- | -------------------- |
 | AI 추천 API | 1일 1회 | Steam ID | 백엔드 (서버 사이드) |
 
 **목적**: AI API 비용 절감 및 남용 방지
@@ -41,7 +41,7 @@ async function checkRecommendationLimit(req, res, next) {
     return res.status(429).json({
       error: 'RATE_LIMIT_EXCEEDED',
       message: 'AI 추천은 하루에 1번만 가능합니다.',
-      next_available_at: result.rows[0].next_available_at
+      next_available_at: result.rows[0].next_available_at,
     });
   }
 
@@ -50,6 +50,7 @@ async function checkRecommendationLimit(req, res, next) {
 ```
 
 **프론트 우회 방지**:
+
 - 반드시 백엔드에서 검증
 - 세션의 Steam ID를 사용 (클라이언트 입력값 신뢰 금지)
 
@@ -57,8 +58,8 @@ async function checkRecommendationLimit(req, res, next) {
 
 ### 일반 API
 
-| 대상 | 제한 | 기준 |
-|------|------|------|
+| 대상                               | 제한      | 기준    |
+| ---------------------------------- | --------- | ------- |
 | 일반 API (게임 목록, 상세 조회 등) | 분당 60회 | IP 주소 |
 
 **목적**: DDoS 방지, 크롤링 방지
@@ -73,7 +74,7 @@ const limiter = rateLimit({
   max: 60, // 최대 60회
   message: {
     error: 'TOO_MANY_REQUESTS',
-    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.'
+    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false,
@@ -83,6 +84,7 @@ app.use('/api', limiter);
 ```
 
 **예외 처리**:
+
 - `/api/auth` 엔드포인트: 분당 10회로 더 엄격하게 제한
 
 ---
@@ -95,18 +97,20 @@ app.use('/api', limiter);
 import session from 'express-session';
 import RedisStore from 'connect-redis'; // Phase 2
 
-app.use(session({
-  secret: process.env.SESSION_SECRET, // 환경 변수
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,      // XSS 방어
-    secure: true,        // HTTPS only
-    sameSite: 'lax',     // CSRF 방어
-    maxAge: 7 * 24 * 60 * 60 * 1000  // 7일
-  },
-  store: new RedisStore({ client: redisClient }) // Phase 2
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // 환경 변수
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true, // XSS 방어
+      secure: true, // HTTPS only
+      sameSite: 'lax', // CSRF 방어
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
+    },
+    store: new RedisStore({ client: redisClient }), // Phase 2
+  })
+);
 ```
 
 ### 세션 만료 처리
@@ -151,7 +155,7 @@ const ALLOWED_VALUES = {
   genre: ['FPS', 'RPG', 'Strategy', 'Puzzle', 'Souls-like', 'Indie'],
   price: [10000, 20000, 30000, 50000],
   pc_spec: ['RTX 20 series', 'RTX 30 series', 'RTX 40 series', 'Mac'],
-  playtime: ['<50h', '50-100h', '>100h']
+  playtime: ['<50h', '50-100h', '>100h'],
 };
 
 function validatePreferences(preferences) {
@@ -184,6 +188,7 @@ const result = await db.query(query, [userInput]);
 ```
 
 **ORM 사용 시에도 주의**:
+
 - Raw Query 지양
 - ORM의 parameterized query 기능 활용
 
@@ -221,7 +226,7 @@ async function verifySteamCallback(params) {
 const ALLOWED_CALLBACK_DOMAINS = [
   'https://yourdomain.com',
   'https://www.yourdomain.com',
-  'https://staging.yourdomain.com' // 스테이징 환경
+  'https://staging.yourdomain.com', // 스테이징 환경
 ];
 
 function validateCallbackUrl(url) {
@@ -239,19 +244,22 @@ function validateCallbackUrl(url) {
 ```javascript
 import cors from 'cors';
 
-app.use(cors({
-  origin: [
-    'https://yourdomain.com',
-    'https://www.yourdomain.com',
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null
-  ].filter(Boolean),
-  credentials: true, // 쿠키 전송 허용
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(
+  cors({
+    origin: [
+      'https://yourdomain.com',
+      'https://www.yourdomain.com',
+      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null,
+    ].filter(Boolean),
+    credentials: true, // 쿠키 전송 허용
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 ```
 
 **주의**:
+
 - 와일드카드(`*`) 사용 금지
 - `credentials: true`와 와일드카드는 함께 사용 불가
 
@@ -283,11 +291,11 @@ app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; " +
-    "style-src 'self' 'unsafe-inline'; " +
-    "img-src 'self' data: https://cdn.akamai.steamstatic.com https://www.google-analytics.com; " +
-    "connect-src 'self' https://api.steampowered.com; " +
-    "frame-src https://www.youtube.com;"
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; " +
+      "style-src 'self' 'unsafe-inline'; " +
+      "img-src 'self' data: https://cdn.akamai.steamstatic.com https://www.google-analytics.com; " +
+      "connect-src 'self' https://api.steampowered.com; " +
+      'frame-src https://www.youtube.com;'
   );
   next();
 });
@@ -364,14 +372,14 @@ app.use((err, req, res, next) => {
   if (process.env.NODE_ENV === 'production') {
     res.status(500).json({
       error: 'INTERNAL_SERVER_ERROR',
-      message: '서버 오류가 발생했습니다.'
+      message: '서버 오류가 발생했습니다.',
     });
   } else {
     // 개발 환경: 상세 에러 정보 반환
     res.status(500).json({
       error: err.name,
       message: err.message,
-      stack: err.stack
+      stack: err.stack,
     });
   }
 });
@@ -401,10 +409,10 @@ npm update
 ```yaml
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     open-pull-requests-limit: 10
 ```
 
@@ -415,21 +423,23 @@ updates:
 ```javascript
 import helmet from 'helmet';
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "https://www.googletagmanager.com"],
-      imgSrc: ["'self'", "data:", "https://cdn.akamai.steamstatic.com"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", 'https://www.googletagmanager.com'],
+        imgSrc: ["'self'", 'data:', 'https://cdn.akamai.steamstatic.com'],
+      },
     },
-  },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  }
-}));
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true,
+    },
+  })
+);
 ```
 
 ---

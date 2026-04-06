@@ -1,9 +1,9 @@
-import nextPlugin from '@next/eslint-plugin-next'
-import turboConfig from 'eslint-config-turbo/flat'
-import boundaries from 'eslint-plugin-boundaries'
-import pluginImport from 'eslint-plugin-import'
-import tseslint from 'typescript-eslint'
-import prettierConfig from 'eslint-config-prettier'
+import nextPlugin from '@next/eslint-plugin-next';
+import turboConfig from 'eslint-config-turbo/flat';
+import boundaries from 'eslint-plugin-boundaries';
+import pluginImport from 'eslint-plugin-import';
+import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
 
 /** @type {import('typescript-eslint').Config} */
 const config = [
@@ -22,11 +22,11 @@ const config = [
         node: true,
       },
       'boundaries/elements': [
-        { type: 'app',      pattern: 'src/app/**' },
-        { type: 'widgets',  pattern: 'src/widgets/**' },
+        { type: 'app', pattern: 'src/app/**' },
+        { type: 'widgets', pattern: 'src/widgets/**' },
         { type: 'features', pattern: 'src/features/**' },
         { type: 'entities', pattern: 'src/entities/**' },
-        { type: 'shared',   pattern: 'src/shared/**' },
+        { type: 'shared', pattern: 'src/shared/**' },
       ],
       'boundaries/ignore': ['**/*.test.*', '**/*.spec.*', '**/*.stories.*'],
     },
@@ -37,11 +37,11 @@ const config = [
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           pathGroups: [
-            { pattern: '@/app/**',      group: 'internal', position: 'before' },
-            { pattern: '@/widgets/**',  group: 'internal', position: 'before' },
+            { pattern: '@/app/**', group: 'internal', position: 'before' },
+            { pattern: '@/widgets/**', group: 'internal', position: 'before' },
             { pattern: '@/features/**', group: 'internal', position: 'before' },
             { pattern: '@/entities/**', group: 'internal', position: 'before' },
-            { pattern: '@/shared/**',   group: 'internal', position: 'before' },
+            { pattern: '@/shared/**', group: 'internal', position: 'before' },
           ],
           pathGroupsExcludedImportTypes: ['builtin', 'external'],
           'newlines-between': 'always',
@@ -55,11 +55,29 @@ const config = [
         {
           default: 'disallow',
           rules: [
-            { from: { type: 'app' },      allow: [{ to: { type: 'widgets' } }, { to: { type: 'features' } }, { to: { type: 'entities' } }, { to: { type: 'shared' } }] },
-            { from: { type: 'widgets' },  allow: [{ to: { type: 'features' } }, { to: { type: 'entities' } }, { to: { type: 'shared' } }] },
-            { from: { type: 'features' }, allow: [{ to: { type: 'entities' } }, { to: { type: 'shared' } }] },
+            {
+              from: { type: 'app' },
+              allow: [
+                { to: { type: 'widgets' } },
+                { to: { type: 'features' } },
+                { to: { type: 'entities' } },
+                { to: { type: 'shared' } },
+              ],
+            },
+            {
+              from: { type: 'widgets' },
+              allow: [
+                { to: { type: 'features' } },
+                { to: { type: 'entities' } },
+                { to: { type: 'shared' } },
+              ],
+            },
+            {
+              from: { type: 'features' },
+              allow: [{ to: { type: 'entities' } }, { to: { type: 'shared' } }],
+            },
             { from: { type: 'entities' }, allow: [{ to: { type: 'shared' } }] },
-            { from: { type: 'shared' },   allow: [] },
+            { from: { type: 'shared' }, allow: [] },
           ],
         },
       ],
@@ -71,6 +89,6 @@ const config = [
 
   // prettier 충돌 규칙 off (반드시 마지막)
   prettierConfig,
-]
+];
 
-export default config
+export default config;

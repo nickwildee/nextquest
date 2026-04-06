@@ -77,6 +77,7 @@ GET    /api/recommend/cache       # 캐시된 추천 결과 조회
 ### 데이터 플로우
 
 #### 1. 게임 데이터 수집 플로우
+
 ```
 [Steam API] → [Crawler] → [Data Validation] → [PostgreSQL]
                 ↓
@@ -84,6 +85,7 @@ GET    /api/recommend/cache       # 캐시된 추천 결과 조회
 ```
 
 #### 2. AI 추천 플로우
+
 ```
 [User Input] → [Backend API]
                     ↓
@@ -104,12 +106,12 @@ GET    /api/recommend/cache       # 캐시된 추천 결과 조회
 
 ### 프론트엔드 캐싱 (TanStack Query)
 
-| 데이터 타입 | staleTime | gcTime | 목적 |
-|-------------|-----------|---------|------|
-| 게임 목록 | 30분 | 1시간 | 자주 변하지 않는 데이터 |
-| 추천 결과 | Infinity | 1시간 | 유저가 명시적으로 새로고침하기 전까지 유지 |
-| 게임 상세 | 1시간 | 2시간 | 가격/할인 정보 최신화 |
-| 유저 라이브러리 | 1시간 | 2시간 | Steam API 호출 최소화 |
+| 데이터 타입     | staleTime | gcTime | 목적                                       |
+| --------------- | --------- | ------ | ------------------------------------------ |
+| 게임 목록       | 30분      | 1시간  | 자주 변하지 않는 데이터                    |
+| 추천 결과       | Infinity  | 1시간  | 유저가 명시적으로 새로고침하기 전까지 유지 |
+| 게임 상세       | 1시간     | 2시간  | 가격/할인 정보 최신화                      |
+| 유저 라이브러리 | 1시간     | 2시간  | Steam API 호출 최소화                      |
 
 ### 백엔드 캐싱
 
@@ -122,10 +124,12 @@ GET    /api/recommend/cache       # 캐시된 추천 결과 조회
 ## 스케일링 고려사항
 
 ### Phase 1 (Node.js)
+
 - 단일 서버 운영
 - Vercel Serverless Functions 활용
 
 ### Phase 2 (Spring 마이그레이션 시)
+
 - 수평 확장 가능한 구조
 - Load Balancer 도입 고려
 - Redis 도입 (세션 스토어, 캐싱 레이어)
