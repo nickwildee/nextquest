@@ -1,5 +1,4 @@
 {
   "name": "nextquest",
-  "private": true,
-  "workspaces": ["apps/*", "packages/*"]
+  "private": true
 }

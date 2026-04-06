@@ -6,7 +6,9 @@
       "Bash(pnpm:install|dev|build|start|create)",
       "Bash(cp:*)",
       "FileSystem(write:./**)",
-      "FileSystem(read:./**)"
+      "FileSystem(read:./**)",
+      "Bash(mkdir -p /c/Project/nextquest/apps)",
+      "Bash(pnpm create:*)"
     ],
     "deny": [],
     "ask": [
