@@ -3,12 +3,13 @@
   "private": true,
   "packageManager": "pnpm@10.23.0",
   "devDependencies": {
-    "turbo": "latest"
+    "turbo": "2.9.4"
   },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   }
 }
