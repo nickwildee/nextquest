@@ -141,4 +141,3 @@ GET    /api/recommend/cache       # 캐시된 추천 결과 조회
 - [AI 추천 로직](./features/ai-recommendation.md)
 - [인증 플로우](./features/authentication.md)
 - [데이터 파이프라인](./features/data-pipeline.md)
-- [데이터베이스 설계](./database.md)

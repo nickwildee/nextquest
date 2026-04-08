@@ -258,5 +258,4 @@ VALUES (?, ?, ?), (?, ?, ?), ...;
 ## 관련 문서
 
 - [보안 정책](../security.md)
-- [데이터베이스 설계](../database.md)
 - [AI 추천 페이지](../pages/recommend.md)

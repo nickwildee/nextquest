@@ -30,6 +30,7 @@
 - **`feature/[기능명]`**: 새로운 기능을 개발할 때 사용합니다.
   - `develop`에서 생성하고, 완료 후 `develop`으로 Merge합니다.
   - 예: `feature/steam-api-5000-reviews`, `feature/recommendation-logic`
+
 - **`hotfix/[버그명]`**: `main` 브랜치에서 발견된 긴급한 버그를 수정할 때 사용합니다.
   - `main`에서 생성하고, 완료 후 `main`과 `develop` 양쪽에 Merge합니다.
 
@@ -38,7 +39,7 @@
 ## 🚀 Work Flow (작업 흐름)
 
 1. **Issue 발행**: 작업할 내용을 Issue에 등록합니다.
-2. **Feature 브랜치 생성**: `develop` 브랜치에서 분기합니다. (`git checkout -d feature/name`)
+2. **Feature 브랜치 생성**: `develop` 브랜치에서 분기합니다. (`git checkout -b feature/name`)
 3. **작업 및 커밋**: 정해진 커밋 컨벤션에 따라 작업합니다.
 4. **PR (Pull Request)**: 작업 완료 후 `feature` -> `develop`으로 PR을 올립니다.
 5. **셀프 리뷰 및 머지**: 코드 확인 후 `develop`에 병합하고 해당 feature 브랜치는 삭제합니다.
@@ -57,7 +58,6 @@
 본 프로젝트는 확장성과 유지보수를 위해 **Feature-Sliced Design** 아키텍처를 따릅니다.
 
 - **src/app**: 앱 진입점, 전역 설정 (Providers, Styles)
-- **src/pages**: 라우트별 페이지 컴포넌트
 - **src/widgets**: 레이아웃을 구성하는 독립적인 큰 UI 블록 (예: `ReviewSection`)
 - **src/features**: 유저 인터랙션이 포함된 기능 단위 (예: `FilterByPlaytime`, `LikeGame`)
 - **src/entities**: 도메인 모델 및 비즈니스 로직 (예: `GameCard`, `ReviewData`, `useSteamStore`)
