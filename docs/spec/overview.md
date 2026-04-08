@@ -45,7 +45,6 @@ AI 기반 Steam 게임 추천 + 할인 게임 브라우징 서비스.
 ## 관련 문서
 
 - [시스템 아키텍처](./architecture.md)
-- [데이터베이스 설계](./database.md)
 - [보안 정책](./security.md)
 - [모니터링 전략](./monitoring.md)
 - [개발 로드맵](../roadmap.md)
