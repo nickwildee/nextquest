@@ -20,14 +20,13 @@ MVP의 대표 흐름은 `기본 리뷰 분석 → 과거 게임 등록 및 평�
 ## 현재 상태 요약
 
 - 기본 브랜치: `main`
-- 현재 작업 브랜치: `codex/docs/add-handoff`
-- 기준 커밋: `91d364d1c1f48ac93092e96644a8372ebffefaf0`
-- 위 커밋은 로컬 `HEAD`, `main`, `origin/main`과 GitHub의 원격 `main`에서 동일하게 확인했다.
-- Issue #8 문서 변경은 커밋 `0fc792b`로 `origin/codex/chore/8-align-m1-roadmap`에 push했다. 아직 PR과 merge는 없다.
-- 인수인계 문서는 별도 `origin/codex/docs/add-handoff` 브랜치에 있으며 아직 PR과 merge는 없다.
+- 인수인계 작성 브랜치: `codex/docs/add-handoff`
+- 기준 `main` 커밋: `531af5c8da748d0775d3e2123cf53e50da0ce1b6`
+- Issue #8 문서 변경은 [PR #13](https://github.com/nickwildee/nextquest/pull/13)으로 squash merge했고 Issue #8도 닫혔다.
+- 이 인수인계 문서는 Issue #8 병합 이후의 상태를 기준으로 작성했다.
 - `git stash list`는 비어 있다. Issue #8에 남은 `stash@{0}` 주의 문구는 더 이상 현재 상태와 맞지 않는다.
 - GitHub M0는 완료되어 닫혔다.
-- GitHub M1 `개발 기반 구축`은 열려 있고 Issue #8, #11, #12가 연결되어 있다.
+- GitHub M1 `개발 기반 구축`은 열려 있고 미완료 구현 Issue #11과 #12가 연결되어 있다.
 - M1 마감일은 2026-08-21이므로 기준 시점에는 이미 지났다.
 - 애플리케이션 코드, `package.json`, workspace, lockfile과 테스트 설정은 아직 없다.
 
@@ -158,10 +157,13 @@ TypeScript 7 대신 6.0.3을 선택한 것은 최신 버전을 무조건 피한 
 - 프로젝트 컨텍스트, MVP 범위, 대표 사용자 흐름과 개발 계획
 - 저장소 작업 원칙 `AGENTS.md`
 - M0 `제품 정의 및 초기 세팅` 완료 및 close
+- M1/M2 로드맵 번호와 기술 경계 정렬
+- 비교 기준 게임의 한국어 인터페이스 필수 조건 정정
 
 ### GitHub에 기록된 것
 
-- [Issue #8: M1 로드맵 정렬 및 기술 기반 결정](https://github.com/nickwildee/nextquest/issues/8)
+- [Issue #8: M1 로드맵 정렬 및 기술 기반 결정](https://github.com/nickwildee/nextquest/issues/8), 완료
+- [PR #13: M1 로드맵 및 기술 기반 정렬](https://github.com/nickwildee/nextquest/pull/13), merge
 - [Discussion #9: M1 개발 기반과 검증 도구 경계](https://github.com/nickwildee/nextquest/discussions/9), 상태 `Accepted`
 - [Discussion #10: M1 버전 및 업데이트 정책](https://github.com/nickwildee/nextquest/discussions/10), 상태 `Accepted`
 - [Issue #11: pnpm 모노레포 스캐폴딩과 빠른 내부 검증 루프](https://github.com/nickwildee/nextquest/issues/11)
@@ -171,28 +173,9 @@ TypeScript 7 대신 6.0.3을 선택한 것은 최신 버전을 무조건 피한 
 
 ## 현재 작업 중인 것
 
-### Issue #8 브랜치
+Issue #8까지의 기술 결정과 문서 정렬은 끝났다. 애플리케이션 구현은 아직 시작하지 않았으며, 다음 활성 작업은 Issue #11의 pnpm 모노레포 스캐폴딩과 빠른 내부 검증 루프다.
 
-`codex/chore/8-align-m1-roadmap`의 다음 변경은 커밋 `0fc792b`로 원격에 push했고 아직 merge하지 않았다.
-
-- `docs/product/development-plan.md`
-  - 문서의 기존 fixture 흐름 M1을 GitHub 로드맵에 맞춰 M2로 이동
-  - M1을 개발 기반 구축으로 정의
-  - M3 안정화와 M4 베타 배포를 GitHub 마일스톤과 정렬
-  - 합의한 아키텍처와 테스트 책임을 반영
-- `docs/project-context.md`
-  - 비교 기준 게임의 필수 언어 조건을 한국어 자막에서 한국어 인터페이스로 수정
-- `docs/product/scope.md`
-  - Steam 공식 상점의 한국어 인터페이스 지원을 필수 조건으로 수정
-  - 한국어 자막과 음성은 필수 조건이 아님을 명시
-- `docs/product/user-flow.md`
-  - Steam 연동과 수동 등록 경로의 필터 조건을 한국어 인터페이스로 수정
-
-한국어 조건은 NextQuest 서비스 UI가 아니라 비교 기준으로 쓰는 게임 UI에 관한 조건이다.
-
-### 인수인계 문서 브랜치
-
-현재 `codex/docs/add-handoff` 브랜치는 `origin/main`에서 분기했다. 이 스레드의 결정, 두 작업 브랜치의 상태와 다음 작업 순서를 정리한 `HANDOFF.md`만 추가한다.
+Storybook/MSW 후속 Issue의 범위는 이 스레드에서 확정했지만 GitHub Issue는 아직 만들지 않았다. Playwright smoke/E2E와 GitHub Actions CI Issue는 후속 검토가 필요하다.
 
 ## 아직 구현하지 않은 것
 
@@ -213,10 +196,7 @@ TypeScript 7 대신 6.0.3을 선택한 것은 최신 버전을 무조건 피한 
 
 ## 알려진 문제/TODO
 
-- Issue #8 브랜치는 원격에 있지만 PR이 없다.
-- `codex/docs/add-handoff`와 연결된 Issue나 PR이 없다.
-- Issue #8은 열려 있고 체크리스트가 갱신되지 않았다.
-- Issue #8의 `stash@{0}` 주의 문구는 현재 `git stash list`가 비어 있어 낡았다. 사용자의 명시적 승인으로 기존 stash를 삭제했다.
+- 닫힌 Issue #8의 본문에는 기존 `stash@{0}` 주의 문구가 남아 있지만, 사용자의 명시적 승인으로 해당 stash를 삭제했고 현재 `git stash list`는 비어 있다.
 - M1 마감일 2026-08-21이 지났다. 일정이나 마감일을 조정할지는 미정이다.
 - Storybook/MSW Issue와 Playwright/GitHub Actions Issue는 아직 만들지 않았다.
 - Storybook/MSW 설치 전에 안정 패치 버전과 peer dependency를 다시 확인해야 한다.
@@ -230,11 +210,11 @@ TypeScript 7 대신 6.0.3을 선택한 것은 최신 버전을 무조건 피한 
 | --- | --- | --- |
 | `AGENTS.md` | 작업 방식, 학습 중심 설명, 문서·Git·검증 원칙 | 병합됨, 작업 전 필독 |
 | `README.md` | 프로젝트 한 문장 소개와 핵심 문서 진입점 | 병합됨 |
-| `HANDOFF.md` | 현재 브랜치와 결정의 인수인계 | 이번 작업에서 생성 |
-| `docs/project-context.md` | 문제, 사용자, 핵심 가치와 제품 원칙 | Issue #8 브랜치에서 수정, 미병합 |
-| `docs/product/scope.md` | MVP 포함·제외 범위, 성공 기준과 미정 정책 | Issue #8 브랜치에서 수정, 미병합 |
-| `docs/product/user-flow.md` | 대표 행동 순서와 예외 흐름 | Issue #8 브랜치에서 수정, 미병합 |
-| `docs/product/development-plan.md` | M0~M4 개발 순서와 완료 조건 | Issue #8 브랜치에서 수정, 미병합 |
+| `HANDOFF.md` | 확정된 결정과 다음 작업의 인수인계 | 이번 작업에서 생성 |
+| `docs/project-context.md` | 문제, 사용자, 핵심 가치와 제품 원칙 | PR #13으로 병합됨 |
+| `docs/product/scope.md` | MVP 포함·제외 범위, 성공 기준과 미정 정책 | PR #13으로 병합됨 |
+| `docs/product/user-flow.md` | 대표 행동 순서와 예외 흐름 | PR #13으로 병합됨 |
+| `docs/product/development-plan.md` | M0~M4 개발 순서와 완료 조건 | PR #13으로 병합됨 |
 | `apps/web/` | Next.js 웹 애플리케이션과 Route Handler | 아직 없음, Issue #11 |
 | `packages/domain/` | 도메인 스키마, 규칙과 합성 fixture | 아직 없음, Issue #12 |
 | `e2e/` | Playwright 대표 흐름 테스트 | 아직 없음, 후속 Issue |
@@ -248,7 +228,7 @@ TypeScript 7 대신 6.0.3을 선택한 것은 최신 버전을 무조건 피한 
 ```bash
 git status --short --branch
 git diff --check
-git diff origin/main...origin/codex/chore/8-align-m1-roadmap -- docs/project-context.md docs/product/scope.md docs/product/user-flow.md docs/product/development-plan.md
+git show --stat 531af5c8da748d0775d3e2123cf53e50da0ce1b6
 rg -n "처음에는|검토했지만|합의한|초안|현재 문서는|임의로|숫자를 맞추기|사용자 확인 후|나중에 결정" README.md docs HANDOFF.md
 ```
 
@@ -281,23 +261,20 @@ pnpm test:e2e
 
 ## 다음에 해야 할 작업
 
-1. 다른 로컬에서 `git fetch origin` 후 `origin/codex/docs/add-handoff`와 `origin/codex/chore/8-align-m1-roadmap`을 확인한다.
-2. Issue #8 브랜치의 diff를 최종 검토하고 Issue #8을 연결한 draft PR을 만든다.
-3. Issue #8의 낡은 stash 참고를 현재 상태에 맞게 수정하고 완료 체크리스트를 갱신한다.
-4. 인수인계 문서 브랜치의 Issue/PR 처리 방법을 정하고 `main` 반영 여부를 결정한다.
-5. 확정된 범위로 Storybook/MSW 후속 Issue를 생성한다.
+1. 다른 로컬에서 `main`을 갱신하고 `AGENTS.md`, 이 문서, Issue #11을 읽는다.
+2. M1 마감일이 지난 상태를 유지할지 GitHub 마일스톤 일정을 조정할지 결정한다.
+3. 확정된 범위로 Storybook/MSW 후속 Issue를 생성한다.
    - `@storybook/nextjs-vite`
    - Storybook Vitest addon과 `@vitest/browser-playwright`/Chromium
    - a11y 실패 조건
    - 공용 MSW handler와 브라우저/Node adapter
    - story-local 상태 검증 컴포넌트
    - M2 제품 UI와 E2E는 제외
-6. Playwright smoke/E2E와 GitHub Actions CI Issue를 별도로 생성한다.
-7. Issue #8 PR을 검증하고 병합한 뒤 #8을 닫는다.
-8. Issue #11에서 스캐폴딩과 빠른 내부 검증 루프를 구현한다.
-9. Issue #12에서 `packages/domain`과 golden fixture eval을 구현한다.
-10. Storybook/MSW Issue를 구현한다.
-11. Playwright/GitHub Actions Issue를 구현해 M1 완료 조건을 닫는다.
+4. Playwright smoke/E2E와 GitHub Actions CI Issue의 세부 범위를 검토하고 생성한다.
+5. Issue #11에서 공식 버전과 peer dependency를 다시 확인한 뒤 스캐폴딩과 빠른 내부 검증 루프를 구현한다.
+6. Issue #12에서 `packages/domain`과 golden fixture eval을 구현한다.
+7. Storybook/MSW Issue를 구현한다.
+8. Playwright/GitHub Actions Issue를 구현해 M1 완료 조건을 닫는다.
 
 ## 앞으로 작업할 때 지켜야 할 규칙
 
@@ -345,6 +322,7 @@ pnpm test:e2e
 - 저장소: <https://github.com/nickwildee/nextquest>
 - M1: <https://github.com/nickwildee/nextquest/milestone/2>
 - Issue #8: <https://github.com/nickwildee/nextquest/issues/8>
+- PR #13: <https://github.com/nickwildee/nextquest/pull/13>
 - Discussion #9: <https://github.com/nickwildee/nextquest/discussions/9>
 - Discussion #10: <https://github.com/nickwildee/nextquest/discussions/10>
 - Issue #11: <https://github.com/nickwildee/nextquest/issues/11>
