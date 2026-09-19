@@ -45,6 +45,18 @@ M2의 대표 사용자 흐름을 외부 서비스 없이 안전하게 구현하�
 - `packages/domain`에는 프레임워크와 데이터베이스에 의존하지 않는 도메인 스키마, 규칙과 fixture를 둔다.
 - 독립 실행·배포, 여러 클라이언트 또는 백그라운드 처리 요구가 확인되면 서버 기능을 별도 API 애플리케이션으로 분리한다.
 
+목표 workspace 구조와 의존 방향은 다음과 같다.
+
+```text
+pnpm workspace
+├── apps/web
+│   └── packages/domain을 사용
+└── packages/domain
+    └── React, Next.js, HTTP와 데이터베이스에 의존하지 않음
+```
+
+`apps/web`과 `packages/domain`은 workspace의 형제이며 의존 방향은 `apps/web → packages/domain` 한 방향이다.
+
 ### 검증 경계
 
 - ESLint는 코드 품질, Prettier는 코드 형식, TypeScript strict 모드는 타입 검사를 책임진다.
@@ -52,15 +64,18 @@ M2의 대표 사용자 흐름을 외부 서비스 없이 안전하게 구현하�
 - Storybook과 MSW로 컴포넌트 상태를 재현하고 Storybook Vitest addon과 a11y addon으로 story 렌더링, 상호작용과 접근성을 검증한다.
 - Playwright는 대표 사용자 흐름과 실패 trace, GitHub Actions는 PR의 공통 검증 실행을 책임진다.
 - `*.test.ts(x)`는 Jest, `*.stories.tsx`는 Storybook Vitest addon, `e2e/*.spec.ts`는 Playwright가 실행한다.
+- 합성 fixture는 `packages/domain`이 소유한다. 순수 도메인 테스트는 fixture를 직접 사용하고, 공용 MSW handler는 로컬 개발, Storybook과 HTTP 경계가 필요한 테스트 환경에서 같은 fixture를 응답으로 제공한다.
+- 환경별 MSW 시작 코드는 분리하며 production 빌드에서는 worker를 시작하지 않는다.
 
 ### 우선순위
 
-1. 기술 스택, 패키지 매니저와 프로젝트 구조 결정
-2. 프로젝트 스캐폴딩과 로컬 실행 명령 통일
-3. format, lint, typecheck, 단위·컴포넌트 테스트로 이어지는 빠른 내부 검증 루프
-4. 도메인 스키마와 golden fixture를 사용한 핵심 규칙 검증
-5. 로컬 개발, 컴포넌트 상태 확인과 테스트가 공유하는 API mock 경계
-6. 브라우저 smoke test와 CI를 사용한 외부 검증 루프
+| 순서 | 결과 | 담당 Issue | 선행 작업 |
+| ---: | --- | --- | --- |
+| 1 | 기술 스택, 패키지 매니저와 프로젝트 구조 결정 | [#8](https://github.com/nickwildee/nextquest/issues/8) | 없음 |
+| 2 | pnpm·Next.js 스캐폴딩과 Jest 기반의 빠른 내부 검증 루프 | [#11](https://github.com/nickwildee/nextquest/issues/11) | #8 |
+| 3 | 도메인 스키마와 golden fixture를 사용한 핵심 규칙 검증 | [#12](https://github.com/nickwildee/nextquest/issues/12) | #11, 상위 영역·하위 특성 분류표 확정 |
+| 4 | Storybook·MSW를 사용한 컴포넌트 상태와 API mock 경계 | [#18](https://github.com/nickwildee/nextquest/issues/18) | #11, #12 |
+| 5 | Playwright smoke test와 GitHub Actions 외부 검증 루프 | [#19](https://github.com/nickwildee/nextquest/issues/19) | #11, #12, #18 |
 
 ### 완료 조건
 
