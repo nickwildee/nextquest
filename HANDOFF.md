@@ -1,293 +1,202 @@
 # NextQuest 작업 인수인계
 
-> 기준 시점: 2026-09-15 (Asia/Seoul)
+> 마지막 검증: 2026-09-19 (Asia/Seoul)
 >
-> 제품의 현재 정의는 `docs/`가 책임진다. 이 문서는 다른 컴퓨터와 새 대화에서 작업을 재개할 때 필요한 결정, 충돌 기록과 다음 작업을 압축해 제공한다.
+> 검토 기준: `origin/main`의 `5238eb6` (`docs: 하위 특성 개인화 입력 계약 복원 (#24)`)
+>
+> 이 문서는 다른 컴퓨터나 새 대화에서 작업을 재개하기 위한 운영 문서다. 제품의 현재 동작과 범위는 `docs/`가 책임지며, 상태가 달라졌다면 저장소와 GitHub를 다시 확인해 이 문서를 갱신한다.
 
-## 가장 먼저 읽을 문서
+## 다른 컴퓨터에서 시작하기
 
-1. `AGENTS.md`
-2. `docs/project-context.md`
-3. `docs/product/scope.md`
-4. `docs/product/user-flow.md`
-5. `docs/product/review-analysis.md`
-6. `docs/product/development-plan.md`
-7. `docs/technical/steam-api-contract.md`
-8. GitHub Issue #12와 #23
-
-## 현재 Git 상태
-
-- 기준 브랜치: `main`
-- 작업 브랜치: `codex/docs/restore-subtrait-input`
-- 작업 시작 커밋: `5f75341`
-- 입력 계약 수정 Issue: [#23](https://github.com/nickwildee/nextquest/issues/23)
-- 리뷰 분석 결정 기록: [Discussion #21](https://github.com/nickwildee/nextquest/discussions/21)
-- 애플리케이션 코드, workspace, `package.json`과 테스트 설정은 아직 없다.
-- M1 구현은 [Issue #11](https://github.com/nickwildee/nextquest/issues/11), M2 도메인 계약은 [Issue #12](https://github.com/nickwildee/nextquest/issues/12)가 담당한다.
-
-다른 컴퓨터에서 이 작업 결과를 확인하려면 다음 순서로 시작한다.
+저장소가 없다면 먼저 복제한다.
 
 ```bash
-git fetch origin
-git switch codex/docs/restore-subtrait-input
-git pull --ff-only
+git clone https://github.com/nickwildee/nextquest.git
+cd nextquest
 ```
 
-## 제품 한 문장 정의
+저장소가 이미 있다면 기존 작업을 덮어쓰지 말고 현재 상태부터 확인한다.
 
-NextQuest는 소울라이크 게임 구매를 고민하는 사용자가 검수된 리뷰 분석과 자신의 과거 플레이 경험을 비교해, 후보 게임이 어떤 요소에서 취향과 일치하거나 충돌하는지 판단하도록 돕는 서비스다.
+```bash
+git status --short --branch
+git branch --show-current
+```
 
-자동 추천 피드나 종합 적합도 점수를 제공하지 않는다. 실제 리뷰 근거를 사용해 `맞을 근거`, `주의 신호`, `판단 불가`를 상위 경험 영역과 하위 특성별로 보여주는 의사결정 지원 서비스다.
+- 수정 파일이나 추적하지 않는 파일이 있으면 stash, reset, checkout 또는 삭제로 정리하지 말고 작업 소유자에게 먼저 확인한다.
+- 예상하지 않은 브랜치에 있거나 `main`과 원격 이력이 갈라졌다면 merge, rebase 또는 cherry-pick을 임의로 실행하지 않는다.
+- 병합이 끝난 작업 브랜치가 아니라 최신 `main`에서 새 작업을 시작한다.
+- GitHub 상태를 확인할 수 있으면 열린 PR과 작업할 Issue를 먼저 확인한다.
 
-## 이번 대화에서 확정한 MVP 경계
+작업 트리가 깨끗하고 기존 변경과 브랜치에 문제가 없을 때 `main`을 동기화한다.
 
-첫 MVP는 외부 사용자를 위한 베타가 아니라 **내부검증용 fixture 프로토타입**이다. 가장 짧은 시간에 핵심 사용자 경험을 완성하고 검증한 뒤, Steam 연동과 실제 리뷰 처리처럼 비용이 큰 작업에 투자한다.
+```bash
+git fetch --prune origin
+git switch main
+git pull --ff-only
+git status --short --branch
+git log -5 --oneline --decorate
+```
 
-### 프로토타입에 포함
+```bash
+gh pr list --state open
+gh issue view 11
+```
 
-- fixture 게임, 라이브러리, 사용자와 리뷰 분석 데이터
-- 로그인 없는 기본 리뷰 분석
-- 개인화 접근을 검증하는 fixture 로그인
-- 비교 게임의 하위 특성 평가와 특성별 개인화 결과
-- 실제 리뷰 원문 근거
-- 구매 판단 상태와 과거 경험 수정
-- `localStorage`를 사용한 초안·완료 상태 복구
+## 먼저 읽을 문서
 
-### 프로토타입에 포함하지 않음
+1. [`AGENTS.md`](AGENTS.md): 작업 방식, 문서 책임과 Git 안전 규칙
+2. [`docs/project-context.md`](docs/project-context.md): 문제, 사용자와 핵심 가치
+3. [`docs/product/scope.md`](docs/product/scope.md): fixture MVP 범위와 미확정 정책
+4. [`docs/product/user-flow.md`](docs/product/user-flow.md): 정상·예외 사용자 흐름
+5. [`docs/product/review-analysis.md`](docs/product/review-analysis.md): 리뷰 분석, 근거와 비용 통제
+6. [`docs/product/development-plan.md`](docs/product/development-plan.md): M0~M4 개발 순서
+7. [`docs/technical/steam-api-contract.md`](docs/technical/steam-api-contract.md): Steam 응답과 정규화 경계
+8. 구현하려는 GitHub Issue 본문과 연결된 Discussion
 
-- 실제 Steam 로그인과 라이브러리 API
-- 운영 인증, OAuth와 서버 세션
-- 서버 저장, SQLite, 운영 데이터베이스와 ORM
-- 다른 기기 동기화
-- 사용자 요청 시 실행하는 온라인 LLM 분석·번역
-- 자동 리뷰 갱신과 패치 자동 감지
+README는 진입점이고 세부 요구사항을 소유하지 않는다. 문서와 Issue가 충돌하면 임의로 구현하지 말고 충돌과 영향을 사용자에게 보고한다.
 
-## 확정한 개인화 입력 규칙
+## 현재 확인된 상태
 
-### 자격과 비교 게임
+| 구분 | 상태 | 근거 |
+| --- | --- | --- |
+| M0 제품 정의 | 완료 | 제품 문서, [PR #22](https://github.com/nickwildee/nextquest/pull/22), [PR #24](https://github.com/nickwildee/nextquest/pull/24) |
+| M1 기술 결정 | 완료 | [Issue #8](https://github.com/nickwildee/nextquest/issues/8), [Discussion #9](https://github.com/nickwildee/nextquest/discussions/9), [Discussion #10](https://github.com/nickwildee/nextquest/discussions/10) |
+| 애플리케이션 구현 | 미착수 | `package.json`, workspace, `apps/web`, `packages/domain`, lockfile과 테스트 설정이 없음 |
+| M1 구현 | 미착수 | Issue #11, #12, #18, #19가 열려 있음 |
+| Steam·인증·DB 연동 | 미착수 | fixture MVP의 제외 범위 |
+| 실제 리뷰 LLM 처리 | 미실행 | 유료 API 호출과 실제 리뷰 데이터가 저장소에 없음 |
 
-- 개인화에는 로그인이 반드시 필요하다.
-- 게임별 최소 플레이 시간과 사용자의 `충분히 플레이했다`는 자기 확인을 함께 요구한다.
-- 플레이 플랫폼과 게임 언어는 자격에 영향을 주지 않는다.
-- 한국어 인터페이스, 자막과 음성 지원을 자격 조건으로 사용하지 않는다.
-- 유효한 비교 기준 게임이 최소 3개 있어야 개인화를 시작한다.
-- 유효한 모든 비교 게임을 계산에 사용한다. 사용자가 3개만 따로 고르지 않는다.
+현재 저장소에는 문서와 GitHub 템플릿만 있다. 따라서 `pnpm install`, `pnpm dev`, `pnpm verify` 또는 애플리케이션 테스트를 아직 실행할 수 없다. 이 명령들은 Issue #11이 완료되고 실제 스크립트가 생긴 뒤 이 문서에 추가한다.
 
-### 필수 입력
+현재 상태를 다시 확인하는 최소 명령은 다음과 같다.
 
-각 비교 게임의 모든 상위 경험 영역을 확인한다. 고정된 6개 목록을 제품 계약으로 사용하지 않으며, 상위 영역의 최종 개수와 명칭은 구현 전에 확정한다.
+```bash
+git status --short --branch
+git ls-tree -r --name-only HEAD
+gh issue list --milestone "M1 — 개발 기반 구축" --state all
+```
 
-- 충분히 경험한 영역에서는 자신에게 중요한 하위 특성을 최대 3개까지 선택한다.
-- 선택한 하위 특성마다 `좋았음` 또는 `아쉬웠음`을 표시한다.
-- 같은 상위 영역에 좋아한 특성과 아쉬웠던 특성이 동시에 존재할 수 있다.
-- 충분히 경험하지 않은 상위 영역은 `경험 부족`으로 완료하고 해당 영역을 계산에서 제외한다.
-- 확인하지 않은 영역이나 하위 특성이 없는 경험 영역이 있으면 저장할 수 없다.
-- 게임 전체에서 호불호를 표시한 하위 특성이 한 개 이상 있어야 게임 평가가 완료된다.
-- 일부 영역이 `경험 부족`이어도 게임별 플레이 조건과 평가 완료 조건을 충족하면 최소 3개 게임 수에는 포함한다.
-- 작성 중인 입력은 자동 저장하고 누락 영역·특성과 진행률을 보여준다.
+## 구현자가 놓치면 안 되는 제품 경계
 
-## 확정한 개인화 계산 규칙
+상세 규칙은 제품 문서를 따르되, 구현 전에 특히 혼동하기 쉬운 현재 기준은 다음과 같다.
 
-- 리뷰 작성자의 긍정·부정은 게임 특성에 대한 리뷰 의견이다.
-- 사용자가 하위 특성에 입력한 `좋았음`·`아쉬웠음`이 개인 취향 방향을 결정한다.
-- 한 상위 경험 영역에 `맞을 근거`와 `주의 신호`가 동시에 존재할 수 있다.
-- 비교 특성, 사용자 입력 또는 리뷰 근거가 부족하거나 충돌하면 하위 특성별 `판단 불가`로 표시한다.
-- 종합 적합도 점수로 결과를 합치지 않는다.
-- Steam 태그 유사성은 작고 상한이 있는 가점만 제공하며 감점하지 않는다.
-- 내부 프로토타입의 태그는 수동 검수 fixture다.
+- 첫 MVP는 외부 사용자를 위한 완성 서비스가 아니라 **내부검증용 fixture 프로토타입**이다.
+- 개인화에는 조건을 충족하고 평가를 완료한 비교 기준 게임이 최소 3개 필요하며, 유효한 모든 게임을 계산에 사용한다.
+- 각 비교 게임의 모든 상위 경험 영역을 확인한다.
+- 충분히 경험한 영역에서는 중요한 하위 특성을 1~3개 선택하고 각 특성에 `좋았음` 또는 `아쉬웠음`을 표시한다.
+- 같은 상위 영역에 좋아한 특성과 아쉬웠던 특성이 함께 존재할 수 있다.
+- 충분히 경험하지 않은 영역은 `경험 부족`으로 완료하고 해당 영역의 취향 계산에서 제외한다.
+- 결과는 상위 영역과 하위 특성별 `맞을 근거`, `주의 신호`, `판단 불가`로 제공하며 종합 적합도 점수를 만들지 않는다.
+- 정상 사용자 흐름의 노출 결과는 검수된 실제 리뷰 원문 근거를 참조한다.
+- 사용자 요청 시 Steam이나 LLM을 호출하지 않고 고정 fixture를 사용한다.
 
-반복 특성은 절대적인 게임 수로 강하다고 판단하지 않는다.
+고정된 6개 단일 평가는 현재 계약이 아니다. 상위 경험 영역의 최종 개수·명칭과 영역별 하위 특성 분류표·동의어는 구현 전에 결정해야 한다. 계약 정정 근거는 [PR #24](https://github.com/nickwildee/nextquest/pull/24)와 [Issue #12](https://github.com/nickwildee/nextquest/issues/12)에서 확인한다.
 
-- **분포 범위**: 해당 상위 영역에 유효한 평가가 있는 비교 게임 중 리뷰 분석에서 특성이 발견된 게임의 비율
-- **선호 일관성**: 사용자가 해당 하위 특성을 직접 선택한 게임에서 호불호 방향이 얼마나 일관적인지
+## M1 작업 지도
 
-특성이 발견되지 않은 게임은 부정 근거가 아니다. 한 게임에서만 발견된 특성은 잠정적인 근거다.
+M1은 아래 순서로 진행한다. 각 Issue는 별도 브랜치와 PR로 처리한다.
 
-## 확정한 리뷰 근거 규칙
+| 순서 | Issue | 결과 | 시작 조건 |
+| ---: | --- | --- | --- |
+| 완료 | [#8 기술 기반 결정](https://github.com/nickwildee/nextquest/issues/8) | pnpm workspace, Next.js, 테스트 도구와 버전 정책 | 완료됨 |
+| 1 | [#11 pnpm·Next.js 스캐폴딩](https://github.com/nickwildee/nextquest/issues/11) | `apps/web`, 공통 명령, Jest와 lockfile | 바로 시작 가능 |
+| 2 | [#12 도메인 스키마와 golden fixture](https://github.com/nickwildee/nextquest/issues/12) | `packages/domain`, Zod 계약과 순수 규칙 테스트 | #11 병합, 상위 영역·하위 특성 분류표 확정 후 |
+| 3 | [#18 Storybook·MSW 하네스](https://github.com/nickwildee/nextquest/issues/18) | 컴포넌트 상태, 접근성과 공용 HTTP mock | #11, #12 병합 후 |
+| 4 | [#19 Playwright·GitHub Actions](https://github.com/nickwildee/nextquest/issues/19) | 브라우저 smoke test와 PR 검증 | #11, #12, #18 병합 후 |
 
-- 정상 결과는 실제 리뷰 원문에서 잘라낸 근거를 사용한다.
-- LLM이 근거 문장을 생성하거나 바꾸지 않는다.
-- LLM은 문장 ID나 원문 범위를 반환하고 프로그램이 원문을 추출한다.
-- 같은 리뷰에서 같은 특성을 여러 번 말해도 독립 의견 한 개로 센다.
-- 한 결과에 근거 3개를 먼저 보여주고 더보기로 최대 10개까지 보여준다.
-- 근거 선택은 다수 의견의 일관성과 서로 다른 관점을 함께 보여준다.
-- 자동 테스트의 오류·빈 상태·충돌 fixture는 합성 문장을 사용한다.
-- 실제 리뷰를 저장소에 포함하기 전에 작성자 식별자를 제거하고 최소 문장, 출처와 이용 조건을 검수한다.
+Issue 상태와 선행 조건이 바뀌면 이 표보다 GitHub의 최신 본문을 우선하고 `HANDOFF.md`를 함께 갱신한다.
 
-## 확정한 특성 판별 구조
+## 다음 작업
 
-특성 키워드만으로 리뷰를 포함하거나 제외하지 않는다.
+다음 구현 작업은 [Issue #11](https://github.com/nickwildee/nextquest/issues/11)이다.
+
+1. 최신 `main`, 열린 PR과 Issue #11 본문을 다시 확인한다.
+2. 같은 작업을 진행 중인 브랜치나 PR이 없을 때 최신 `origin/main`에서 Issue #11 전용 브랜치를 만든다.
+3. Issue에 기록된 Node.js, pnpm, Next.js와 도구 버전을 설치 직전 공식 문서에서 다시 확인한다.
+4. 버전을 바꿔야 한다면 설치부터 하지 말고 확인한 사실, 영향과 대안을 사용자에게 보고한다.
+5. Issue #11의 포함 범위만 구현하고 `packages/domain`, Storybook, MSW, Playwright와 CI를 미리 추가하지 않는다.
+6. 새 환경에서 frozen install, 개발 서버, format, lint, typecheck, Jest, build와 통합 검증 명령을 확인한다.
+
+새 브랜치명 예시는 `codex/chore/11-pnpm-next-scaffold`다. 같은 이름이 이미 존재하면 덮어쓰거나 강제로 재사용하지 않는다.
+
+## 목표 구조와 의존 방향
+
+M1의 목표 구조는 다음과 같다. 현재 존재하는 구조가 아니라 Issue #11과 #12가 순서대로 만들 구조다.
 
 ```text
-리뷰 원문
-→ 문장 분리와 ID 부여
-→ LLM의 의미 분류
-→ 통제된 특성 ID와 의견 방향
-→ 코드의 중복 제거·집계·개인화 계산
-→ 원문 범위로 근거 추출
-→ 사람 검수
+pnpm workspace
+├── apps/web
+│   ├── Next.js UI
+│   ├── Route Handler
+│   └── packages/domain을 사용
+└── packages/domain
+    ├── Zod 스키마
+    ├── 순수 도메인 규칙
+    └── 합성 fixture
 ```
 
-문장은 세 수준으로 나눈다.
+`apps/web`과 `packages/domain`은 workspace의 형제다. 의존 방향은 `apps/web → packages/domain`이며 `packages/domain`은 React, Next.js, HTTP와 데이터베이스에 의존하지 않는다.
 
-- `generic_overall`: 게임 전체의 짧은 감상만 있음
-- `dimension_only`: 상위 경험 영역은 언급하지만 구체적인 이유가 없음
-- `trait_specific`: 비교 가능한 구체적 플레이 특성과 의견이 있음
+상태 재현 경계는 다음과 같다.
 
-키워드와 동의어는 후보 표시, LLM 예시와 누락 검수에만 사용한다. 분류표에 없는 특성은 `other`로 보내며 반복된 항목만 사람이 검수해 정식 특성으로 추가한다.
+```text
+packages/domain의 합성 fixture
+├── 순수 도메인 테스트가 직접 사용
+└── 공용 MSW handler가 HTTP 응답으로 변환
+    ├── 로컬 개발
+    ├── Storybook
+    └── HTTP 경계가 필요한 테스트
 
-LLM은 관련성, 특성 정규화, 의견 방향, 복합 주장 분리와 애매함을 담당한다. 프로그램은 원문 추출, 리뷰 단위 중복 제거, 수치 계산, 캐시, 비용과 `판단 불가` 처리를 담당한다.
+production 빌드에서는 MSW worker를 시작하지 않음
+```
 
-## 확정한 리뷰 언어와 번역
+세부 책임은 [`docs/product/development-plan.md`](docs/product/development-plan.md)와 각 M1 Issue가 소유한다.
 
-- 한국어 리뷰를 먼저 사용하고 근거가 부족한 특성은 영어로 보완한다.
-- 다른 언어는 내부 프로토타입에서 다루지 않는다.
-- 영어 원문 상태로 특성과 의견을 분석한다.
-- 최종 근거로 선택된 문장만 별도 LLM 호출로 한국어 번역한다.
-- 분석과 번역을 한 요청에 섞지 않는다.
-- 번역은 캐시하고 전부 사람 검수한다.
-- 화면에는 한국어 번역, 영어 원문과 AI 번역 표시를 함께 제공한다.
-- 게임 맥락과 게이머 용어집을 제공하고 부정, 은어, 줄임말과 욕설을 임의로 완화하지 않는다.
+## 구현을 막는 것과 막지 않는 것
 
-## 확정한 리뷰 최신화 정책
+- Issue #11을 시작하기 위한 제품 결정 차단 요소는 없다.
+- Issue #12는 #11의 workspace와 Jest 검증 루프뿐 아니라 상위 경험 영역과 하위 특성 분류표 확정이 필요하다.
+- Issue #18은 #11과 #12, Issue #19는 #11, #12와 #18이 선행돼야 한다.
+- 게임별 최소 플레이 시간, 정확한 fixture 게임 구성, 리뷰 안정화·우세 수치와 사용자 검증 통과 기준은 아직 미확정이다. 책임 목록은 [`docs/product/scope.md`](docs/product/scope.md)와 [`docs/product/review-analysis.md`](docs/product/review-analysis.md)에 있다.
+- 미확정 제품 정책은 #11의 개발 기반 구축을 막지 않는다.
 
-### 내부 프로토타입
+## 데이터와 비용 안전선
 
-- 리뷰 스냅샷을 고정한다.
-- 수집 시점과 요청 조건, 분류표·프롬프트 버전을 기록한다.
-- 검증 중 같은 입력의 결과가 바뀌지 않게 자동 갱신하지 않는다.
+- 실제 Steam 계정 식별자, API 키, 사용자 이름과 전체 리뷰 덤프를 저장소·fixture·로그에 넣지 않는다.
+- 자동 테스트는 합성 데이터를 사용한다.
+- 실제 리뷰 근거를 추가하려면 작성자 식별자를 제거하고 최소 문장, 출처, 수집 시점과 이용 조건을 검수한다.
+- 유료 LLM 호출 전에는 사람 정답 데이터, 예상 토큰과 최대 비용을 제시하고 사용자 승인을 받는다.
+- 이 저장소에서는 아직 유료 LLM 호출을 실행하지 않았다.
 
-### 실제 연동 이후
+## Git과 PR 인계 규칙
 
-- 30일마다 새 리뷰와 수정 리뷰 존재 여부를 확인한다.
-- 기존 분석 표본의 20% 이상이 변경되거나 대규모 패치·DLC가 발생하면 갱신한다.
-- 변경된 리뷰만 분석하고 성공한 결과는 재사용한다.
-- 대규모 패치는 패치 이후의 새 분석 구간을 만들고 영향을 받은 과거 특성을 현재 통계에서 제외한다.
-- 분류표, 프롬프트 또는 출력 스키마가 변경될 때만 필요한 범위를 다시 분석한다.
-- 초기에는 패치 발생을 수동으로 표시한다.
+전체 규칙은 [`AGENTS.md`](AGENTS.md)를 따른다.
 
-`최신 리뷰 50개만 유지`하는 안은 표본 부족 때문에 사용하지 않는다.
+- 한 Issue를 한 브랜치와 한 PR로 처리하고 관련 없는 변경을 섞지 않는다.
+- 커밋, push와 PR 생성 전에 변경 요약과 PR 본문 초안을 사용자에게 보여주고 승인을 받는다.
+- 예상하지 않은 브랜치나 앞서간 기준 브랜치를 발견하면 멈추고 사용자에게 선택지를 보고한다.
+- 사용자 승인 없이 merge, rebase, cherry-pick 또는 강제 push로 이력을 바꾸지 않는다.
+- PR #14의 처리 방식은 사용자 승인을 받은 일회성 예외였고, PR #15의 Issue 누락은 인증 문제로 생긴 과거 기록이다. 둘 다 현재의 Issue → 브랜치 → PR 원칙을 완화하지 않는다.
 
-## 리뷰 표본에서 확정한 것과 미확정한 것
+## 현재 가능한 검증
 
-### 확정
-
-- Steam 리뷰 API가 요청 조건에 맞는 `total_reviews`, `total_positive`, `total_negative`를 제공한다.
-- 전체 모수, 실제 분석 리뷰 수와 특성을 언급한 리뷰 수를 분리한다.
-- 리뷰 100개는 전체 목표가 아니라 한 배치다.
-- 표본을 긍정·부정 50:50으로 인위적으로 맞추지 않는다.
-- 반대 의견 보충 표본은 근거로 사용할 수 있지만 의견 비율 계산에서는 제외한다.
-- 단순 과반만으로 의견 우세를 선언하지 않는다.
-- 사용자에게 분석한 범위와 특성별 분자·분모를 표시한다.
-
-### 구현 전 검증
-
-- 한 배치 100개가 적절한지
-- 주요 특성 순위와 의견 분포가 안정됐다고 보는 판정식
-- 게임당 분석 상한
-- 특성별 긍정·부정 우세를 표시할 최소 독립 리뷰 수와 신뢰 기준
-- 한국어와 영어 표본의 정확한 구성
-
-첫 비용 보호 가정은 `100개 단위, 최대 500개`지만 확정 제품 수치가 아니다.
-
-## 유료 LLM 호출 안전장치
-
-프로젝트 소유자의 비용 부담이 작아야 하며 실패로 같은 데이터를 반복 전송하지 않는 것이 최우선 제약이다.
-
-- 유료 호출 전에 20~30개의 실제 리뷰로 사람이 정답 라벨을 만든다.
-- 입력·출력 토큰과 최대 비용을 계산해 매 실제 호출 전에 사용자 승인을 받는다.
-- 작은 배치가 사람 정답과 비교해 통과하기 전에는 확장하지 않는다.
-- 첫 분석 후보는 `GPT-5.6 Luna`의 `medium` reasoning이며 호출 직전 공식 가격과 지원 기능을 다시 확인한다.
-- `GPT-5.6 Terra` 또는 `GPT-5.6 Sol`로 자동 승격하지 않는다. Luna가 사람 정답 평가를 통과하지 못하고 사용자가 별도 승인한 경우에만 제한적으로 비교한다.
-- 입력 해시, 모델, 프롬프트, 분류표와 스키마 버전을 저장한다.
-- 성공한 배치는 다시 호출하지 않는다.
-- 전송 또는 구조화 실패만 최대 1회 재시도한다.
-- 의미가 애매하면 API를 다시 호출하지 않고 사람 검수로 보낸다.
-- 전체 예산과 배치별 비용 상한을 넘으면 자동 중단한다.
-- LLM 출력은 ID, enum, 신뢰도와 원문 범위 중심으로 제한한다.
-
-아직 유료 API 호출을 실행하지 않았다.
-
-## 2026-09-15에 확인한 Steam API 사실
-
-- 공식 리뷰 엔드포인트는 첫 응답의 `query_summary`에 조건별 전체 리뷰 수와 긍정·부정 수를 제공한다.
-- 리뷰는 최대 100개씩 받고 `cursor`로 다음 페이지를 요청한다.
-- 공개 리뷰 응답에는 분석에 필요하지 않은 Steam ID와 프로필 정보가 포함될 수 있으므로 mapper에서 제거해야 한다.
-- 공개 상점 `api/appdetails` 실제 응답에는 장르, 카테고리와 지원 언어가 있었지만 `tags` 필드는 없었다.
-- 공식 태그 문서는 태그의 용도를 설명하지만 안정적인 공개 태그 API는 확인하지 못했다.
-- `GetOwnedGames`는 API 키와 Steam ID가 필요해 내부 프로토타입에서 실제 호출하지 않았다.
-
-세부 필드와 출처는 `docs/technical/steam-api-contract.md`를 확인한다.
-
-## 입력 계약 정정 기록
-
-[PR #15](https://github.com/nickwildee/nextquest/pull/15)는 상위 경험 영역과 하위 특성의 단계형 입력을 도입했다. [PR #22](https://github.com/nickwildee/nextquest/pull/22)는 이후 대화에서 확정한 fixture 내부 프로토타입, 최소 3게임, 모든 유효 게임 사용과 `경험 부족`을 반영하면서, 모든 영역을 확인해야 한다는 결정을 하위 특성 입력 제거로 잘못 확대 해석했다.
-
-현재 입력 계약은 다음처럼 두 결정의 유효한 부분을 결합한다.
-
-- fixture 내부 프로토타입, 최소 3게임, 모든 유효 게임 사용, 한국어 지원 무관은 유지한다.
-- 고정된 6개 단일 평가는 사용하지 않고 상위 경험 영역과 하위 특성 입력을 사용한다.
-- 모든 상위 경험 영역을 확인하되, 경험한 영역은 최대 3개의 하위 특성에 호불호를 표시하고 경험하지 않은 영역은 `경험 부족`으로 완료한다.
-- 한 상위 영역 안에 좋아한 특성과 아쉬웠던 특성을 함께 저장할 수 있다.
-- 상위 영역의 정확한 개수·명칭과 하위 특성 어휘는 아직 결정하지 않았다.
-
-정정 작업은 [Issue #23](https://github.com/nickwildee/nextquest/issues/23)이 추적한다.
-
-## M1 기술 경계
-
-기존에 확정된 M1 기술 결정은 유지한다.
-
-- pnpm workspace 기반 모노레포
-- `apps/web`: Next.js 애플리케이션과 Route Handler
-- `packages/domain`: React, HTTP와 DB에 의존하지 않는 TypeScript·Zod 계약과 fixture
-- ESLint, Prettier, TypeScript strict
-- Jest와 React Testing Library
-- Storybook, MSW, Storybook Vitest addon과 a11y addon
-- Playwright E2E와 GitHub Actions
-- M1에는 별도 API 앱, DB, Docker, Steam, 실제 리뷰 파이프라인과 온라인 AI를 넣지 않음
-
-정확한 버전과 선택 이유는 [Discussion #9](https://github.com/nickwildee/nextquest/discussions/9), [Discussion #10](https://github.com/nickwildee/nextquest/discussions/10)과 Issue #11을 따른다. 라이브러리 버전은 설치 직전에 공식 문서로 다시 확인한다.
-
-## 다음에 결정할 것
-
-제품 결정을 한 번에 하나씩 이어간다.
-
-1. 리뷰 배치 안정화 판정식, 게임당 상한과 의견 우세 기준
-2. 내부 프로토타입에 실제 사용할 후보·비교 게임 fixture 구성
-3. 결과 화면과 구매 판단 상태의 세부 동작
-4. 내부 사용자 검증의 통과·실패 기준
-5. 게임별 최소 플레이 시간
-6. 상위 경험 영역의 최종 개수·명칭과 영역별 하위 특성 분류표·동의어
-
-## 다음 구현 순서
-
-1. 이 문서 변경을 리뷰하고 병합한다.
-2. Issue #11에서 pnpm 모노레포와 기본 검증 루프를 구축한다.
-3. 현재 제품 규칙으로 Issue #12의 도메인 스키마와 golden fixture를 구현한다.
-4. 한 후보 게임과 비교 게임 3개 이상의 fixture로 전체 사용자 흐름을 연결한다.
-5. 2~3개 후보 게임으로 구조가 특정 게임에 종속되지 않았는지 확인한다.
-6. 사람 정답 리뷰로 분류 정확도와 예상 비용을 측정한다.
-7. 사용자 가치가 확인된 뒤 Steam과 오프라인 리뷰 처리 파이프라인을 연결한다.
-
-## 검증 명령
-
-애플리케이션 코드가 아직 없으므로 현재는 문서 검증만 가능하다.
+애플리케이션 코드가 생기기 전에는 문서와 저장소 상태만 검증한다.
 
 ```bash
 git status --short --branch
 git diff --check
-rg -n "6개 경험 요소|6개 요소 필수|각 요소.*좋았음.*아쉬웠음.*경험 부족" README.md docs HANDOFF.md
+git grep -n -E '6개 경험 요[소]|6개 요소 필[수]|각 요[소].*좋았음.*아쉬웠음.*경험 부족' -- README.md docs HANDOFF.md
+git grep -n -E '^(<<<<<<<|=======|>>>>>>>)' -- .
 ```
 
-새 문서는 README에서 두 번 이내의 링크로 접근할 수 있어야 한다. 모든 로컬 Markdown 링크와 코드 펜스 짝을 확인한다.
+폐기된 개인화 규칙과 충돌 표시는 검색 결과가 없어야 한다. 로컬 Markdown 링크와 코드 펜스의 짝도 확인한다. Issue #11이 병합되면 이 구역에 실제 설치·실행·공통 검증 명령을 추가한다.
 
-## 관련 GitHub 항목
+## 주요 기록
 
-- 저장소: <https://github.com/nickwildee/nextquest>
-- 입력 계약 수정 Issue #23: <https://github.com/nickwildee/nextquest/issues/23>
-- M1 구현 Issue #11: <https://github.com/nickwildee/nextquest/issues/11>
-- M2 도메인 Issue #12: <https://github.com/nickwildee/nextquest/issues/12>
-- 이전 개인화 문서 PR #15: <https://github.com/nickwildee/nextquest/pull/15>
-- M1 도구 결정 Discussion #9: <https://github.com/nickwildee/nextquest/discussions/9>
-- 버전 정책 Discussion #10: <https://github.com/nickwildee/nextquest/discussions/10>
-- 리뷰 분석 정책 Discussion #21: <https://github.com/nickwildee/nextquest/discussions/21>
+- [Issue #16: M1 개발 하네스 추적과 운영 문서 정렬](https://github.com/nickwildee/nextquest/issues/16)
+- [PR #24: 하위 특성 개인화 입력 계약 복원](https://github.com/nickwildee/nextquest/pull/24)
+- [PR #22: fixture MVP와 리뷰 분석 정책 정렬](https://github.com/nickwildee/nextquest/pull/22)
+- [Issue #12: 도메인 스키마와 golden fixture eval 구축](https://github.com/nickwildee/nextquest/issues/12)
+- [Discussion #9: M1 기술 기반 결정](https://github.com/nickwildee/nextquest/discussions/9)
+- [Discussion #10: 버전 및 업데이트 정책](https://github.com/nickwildee/nextquest/discussions/10)
+- [Discussion #21: 리뷰 분석과 fixture 데이터 정책](https://github.com/nickwildee/nextquest/discussions/21)
