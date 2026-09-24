@@ -1,6 +1,8 @@
 # Steam API 응답과 fixture 계약
 
-> 외부 응답 확인일: 2026-09-15 (Asia/Seoul)
+> 외부 응답 관찰 기록: 2026-09-15 (Asia/Seoul)
+>
+> 공식 리뷰 API 요청 조건 재확인: 2026-09-24 (Asia/Seoul). 아래 과거 응답 수치를 새로 수집했다는 뜻은 아니다.
 
 ## 목적
 
@@ -39,16 +41,18 @@ GET https://store.steampowered.com/appreviews/<appid>?json=1
 
 | 파라미터 | 역할 |
 | --- | --- |
-| `filter` | 최근 작성, 최근 수정 또는 전체 범위의 정렬·조회 방식 |
+| `filter` | `recent`: 작성 시각순, `updated`: 수정 시각순, `all`: `day_range`의 이동 구간을 사용하는 유용성순 |
 | `language` | Steam 리뷰 언어 코드 또는 모든 언어 |
-| `day_range` | 조회 기간 |
-| `cursor` | 다음 페이지를 가져오는 커서 |
+| `day_range` | `filter=all`에서 유용한 리뷰를 찾는 과거 일수 범위. 최대 365이며 `recent`·`updated`의 기간 필터가 아님 |
+| `cursor` | 첫 페이지는 `*`, 이후는 응답의 커서. 쿼리 문자열에 넣을 때 URL 인코딩 |
 | `review_type` | 전체, 긍정 또는 부정 리뷰 |
 | `purchase_type` | Steam 구매 또는 전체 구매 유형 |
 | `num_per_page` | 한 페이지의 리뷰 수, 최대 100개 |
 | `filter_offtopic_activity` | Steam이 비정상적 리뷰 활동으로 분류한 기간 포함 여부 |
 
 전체 모수와 표본을 비교하려면 요청 조건을 결과와 함께 저장해야 한다. 조건이 다르면 `total_reviews`도 다른 모집단을 의미한다.
+
+커서로 끝까지 순회할 때는 `recent` 또는 `updated`를 사용한다. `all`은 계속 결과를 반환할 수 있어 빈 목록을 종료 조건으로 삼는 순회에 적합하지 않다. 이 구분은 [공식 요청 파라미터 문서](https://partner.steamgames.com/doc/store/getreviews?l=english)의 동작을 따른다.
 
 ### 첫 페이지 요약
 
