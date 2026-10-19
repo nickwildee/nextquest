@@ -1,8 +1,8 @@
 # NextQuest 작업 인수인계
 
-> 마지막 검증: 2026-09-24 (Asia/Seoul)
+> 마지막 검증: 2026-10-19 (Asia/Seoul)
 >
-> 검토 기준: `origin/main`의 `d2113ea` (`docs: M1 인수인계와 개발 하네스 추적 정렬 (#25)`)
+> 검토 기준: `origin/main`의 `f949a1068c7955e0f2ebb534e8086f41fe296444` (`docs: 구매 판단 저장 접근 정책과 M2 검증 조건 정렬 (#32)`)
 >
 > 이 문서는 다른 컴퓨터나 새 대화에서 작업을 재개하기 위한 운영 문서다. 제품의 현재 동작과 범위는 `docs/`가 책임지며, 상태가 달라졌다면 저장소와 GitHub를 다시 확인해 이 문서를 갱신한다.
 
@@ -39,6 +39,7 @@ git log -5 --oneline --decorate
 
 ```bash
 gh pr list --state open
+gh issue view 33
 gh issue view 11
 ```
 
@@ -55,18 +56,25 @@ gh issue view 11
 
 README는 진입점이고 세부 요구사항을 소유하지 않는다. 문서와 Issue가 충돌하면 임의로 구현하지 말고 충돌과 영향을 사용자에게 보고한다.
 
+사용자가 코드·테스트·설정을 직접 작성하고 에이전트는 단계별 설명과 검수를 맡는다. 상세 협업 원칙은 [`AGENTS.md`의 학습 중심 설명](AGENTS.md#학습-중심-설명)을 따른다. 다른 컴퓨터에서도 이 문서와 해당 원칙으로 작업을 재개하며 로컬 전용 메모를 필수 자료로 사용하지 않는다.
+
 ## 현재 확인된 상태
 
 | 구분 | 상태 | 근거 |
 | --- | --- | --- |
-| M0 제품 정의 | 완료 | 제품 문서, [PR #22](https://github.com/nickwildee/nextquest/pull/22), [PR #24](https://github.com/nickwildee/nextquest/pull/24) |
+| M0 제품 정의 | 완료 | 제품 문서, [PR #29](https://github.com/nickwildee/nextquest/pull/29), [PR #32](https://github.com/nickwildee/nextquest/pull/32) |
 | M1 기술 결정 | 완료 | [Issue #8](https://github.com/nickwildee/nextquest/issues/8), [Discussion #9](https://github.com/nickwildee/nextquest/discussions/9), [Discussion #10](https://github.com/nickwildee/nextquest/discussions/10) |
 | 애플리케이션 구현 | 미착수 | `package.json`, workspace, `apps/web`, `packages/domain`, lockfile과 테스트 설정이 없음 |
 | M1 구현 | 미착수 | Issue #11, #12, #18, #19가 열려 있음 |
+| 분류표 선행 연구 | 진행 중 | [Issue #28](https://github.com/nickwildee/nextquest/issues/28), [Issue #33](https://github.com/nickwildee/nextquest/issues/33); 수동 실험 방식을 확정했고 분석 실행 코드는 저장소에 없음 |
 | Steam·인증·DB 연동 | 미착수 | fixture MVP의 제외 범위 |
-| 실제 리뷰 LLM 처리 | 미실행 | 유료 API 호출과 실제 리뷰 데이터가 저장소에 없음 |
+| 실제 리뷰 API 분석 | 미실행 | 이 연구에서 유료 모델 호출·실제 토큰 사용량 측정·사람 정답 대비 모델 품질 평가를 실행하지 않음 |
 
 현재 저장소에는 문서와 GitHub 템플릿만 있다. 따라서 `pnpm install`, `pnpm dev`, `pnpm verify` 또는 애플리케이션 테스트를 아직 실행할 수 없다. 이 명령들은 Issue #11이 완료되고 실제 스크립트가 생긴 뒤 이 문서에 추가한다.
+
+기존 실제 리뷰 검수 자료는 저장소 복제에 포함되지 않는다. 오프라인 구조 검사와 실제 모델의 의미 분석 품질 검증은 구분한다.
+
+문서 변경 전 확인한 원격 main과 로컬 기준 커밋은 일치했다. 열린 구현 작업은 GitHub에서 다시 확인한다. #31은 CI 구축 후 main 필수 상태 검사를 연결하는 후속 작업이며, 이 인수인계의 반영은 #34가 담당한다.
 
 현재 상태를 다시 확인하는 최소 명령은 다음과 같다.
 
@@ -108,7 +116,32 @@ Issue 상태와 선행 조건이 바뀌면 이 표보다 GitHub의 최신 본문
 
 ## 다음 작업
 
-다음 구현 작업은 [Issue #11](https://github.com/nickwildee/nextquest/issues/11)이다.
+### 분류표 선행 연구: Issue #33
+
+[Issue #33](https://github.com/nickwildee/nextquest/issues/33)의 수동 리뷰 분석 도구와 소규모 검증을 진행한다. 연구 도구는 M1의 TypeScript·Jest·pnpm 정책을 바꾸지 않는다.
+
+첫 학습 과제는 JavaScript `.js`로 합성 리뷰 한 개가 담긴 JSON 파일을 읽고, 문자열을 JavaScript 객체로 변환한 뒤 리뷰 본문을 콘솔에 출력하는 것이다. 사용자가 다음 파일을 직접 작성한다. 아래 파일은 아직 없으며 구현할 대상이다.
+
+| 구현할 파일 | 첫 단계의 책임 |
+| --- | --- |
+| `tools/review-pilot/package.json` | 해당 폴더의 `.js`를 ES 모듈로 실행하도록 `type`을 `module`로 지정 |
+| `tools/review-pilot/review.json` | 연습용 `reviewId`, `text`를 가진 합성 리뷰 한 개; 최종 제품 스키마가 아님 |
+| `tools/review-pilot/main.js` | 파일 읽기, JSON 변환과 본문 출력 |
+
+문서 작업을 마친 뒤 최신 main과 #33의 기존 브랜치·PR을 확인하고 구현 브랜치에서 시작한다. 첫 과제에는 네트워크, API 키, 실제 리뷰 원문과 추가 패키지가 필요하지 않다. 본문이 그대로 출력되고 사용자가 파일 읽기와 JSON 변환의 차이를 설명할 수 있으면 첫 단계를 완료한다. 관련 개념은 `node:fs`의 `readFileSync`, UTF-8 문자열, `JSON.parse`, `console.log`다.
+
+이후 입력 검증, 원문·근거 ID 보존, 분석 요청 준비, 실제 사용량 기록과 사람 정답 대비 품질 비교를 작은 단계로 구현한다. 외부 호출 없이 입력과 요청 준비를 검증한 뒤 유료 실험을 진행한다. 여러 게임의 특성 묶기는 개별 리뷰 추출 품질을 확인한 뒤 검증한다. 아직 없는 실행 파일이나 명령을 존재하는 것으로 안내하지 않는다.
+
+유료 실험 전에 남은 사항은 다음과 같다.
+
+- 실제 리뷰 20~30개의 사람 정답 자료와 원문 이용·전송 범위를 검수해야 한다. 기존 리뷰 5개에 대한 사용자 의견과 AI가 재판정한 결과를 완성된 사람 정답 자료로 혼동하지 않는다.
+- 첫 표본의 구체적인 구성, 실행 모델·설정과 비용 상한을 확인하고 승인을 받아야 한다.
+- 유료 실행 전에 `OPENAI_API_KEY` 설정을 확인한다. 키의 존재만 확인하며 값은 채팅·문서·로그에 남기지 않는다.
+- 실제 입력·출력·추론 토큰 사용량과 모델 품질은 미측정이다. 추정 비용, 오프라인 구조 검사와 실제 측정 결과를 구분한다.
+
+### 별도로 유지되는 M1 구현 순서
+
+M1의 첫 구현 작업은 [Issue #11](https://github.com/nickwildee/nextquest/issues/11)이다. #33의 연구는 #11의 선행 조건이나 완료 증거가 아니다.
 
 1. 최신 `main`, 열린 PR과 Issue #11 본문을 다시 확인한다.
 2. 같은 작업을 진행 중인 브랜치나 PR이 없을 때 최신 `origin/main`에서 Issue #11 전용 브랜치를 만든다.
@@ -193,6 +226,10 @@ git grep -n -E '^(<<<<<<<|=======|>>>>>>>)' -- .
 
 ## 주요 기록
 
+- [Issue #34: 직접 구현 협업 원칙과 수동 리뷰 연구 인수인계](https://github.com/nickwildee/nextquest/issues/34)
+- [Issue #33: 수동 리뷰 분석 파일럿과 토큰·품질 검증 도구](https://github.com/nickwildee/nextquest/issues/33)
+- [Issue #28: 개인화 계약과 분류표 확정](https://github.com/nickwildee/nextquest/issues/28)
+- [PR #32: 구매 판단 저장 접근 정책과 M2 검증 조건 정렬](https://github.com/nickwildee/nextquest/pull/32)
 - [Issue #16: M1 개발 하네스 추적과 운영 문서 정렬](https://github.com/nickwildee/nextquest/issues/16)
 - [PR #24: 하위 특성 개인화 입력 계약 복원](https://github.com/nickwildee/nextquest/pull/24)
 - [PR #22: fixture MVP와 리뷰 분석 정책 정렬](https://github.com/nickwildee/nextquest/pull/22)
