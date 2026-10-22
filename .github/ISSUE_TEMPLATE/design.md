@@ -1,7 +1,7 @@
 ---
 name: Design
 about: UI 또는 UX를 설계하거나 개선합니다.
-title: "design: "
+title: 'design: '
 labels: design
 ---
 

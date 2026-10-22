@@ -1,7 +1,7 @@
 ---
 name: Chore
 about: 프로젝트 설정, 개발 환경, 의존성 등 유지보수 작업을 수행합니다.
-title: "chore: "
+title: 'chore: '
 labels: chore
 ---
 

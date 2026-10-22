@@ -73,15 +73,28 @@ pnpm workspace
 - 합성 fixture는 `packages/domain`이 소유한다. 순수 도메인 테스트는 fixture를 직접 사용하고, 공용 MSW handler는 로컬 개발, Storybook과 HTTP 경계가 필요한 테스트 환경에서 같은 fixture를 응답으로 제공한다.
 - 환경별 MSW 시작 코드는 분리하며 production 빌드에서는 worker를 시작하지 않는다.
 
+### TypeScript·React·Next.js 도입 시 도구 설정
+
+[Issue #11](https://github.com/nickwildee/nextquest/issues/11)의 개발 기반 구축에서 다음 항목을 확인한다. 도메인 패키지의 TypeScript 검사 범위는 [Issue #12](https://github.com/nickwildee/nextquest/issues/12)에서 확장한다.
+
+- 루트에서 ESLint·Prettier의 공통 의존성과 설정을 관리하고, 기존 JavaScript 검사 설정을 기반으로 파일 경로와 실행 환경별 규칙을 확장한다.
+- `apps/web`에 선택한 Next.js 버전과 호환되는 `eslint-config-next`를 적용하고 React, React Hooks와 Next.js 규칙이 실행되는지 확인한다. 설치 전에 공식 문서에서 Node.js·ESLint·관련 플러그인의 지원 범위를 확인한다.
+- TypeScript 파일에 TypeScript용 ESLint 설정을 적용하고, `strict`를 활성화한 TypeScript 컴파일러의 타입 검사를 별도 명령으로 구성한다. `packages/domain`에는 React·Next.js 규칙을 적용하지 않는다.
+- Prettier의 공통 형식 설정을 유지하고 `.ts`, `.tsx`가 검사 대상에 포함되는지 확인한다. TypeScript·JSX 지원을 위한 별도 포맷터 플러그인은 필요하지 않다.
+- 루트 검증 명령이 JavaScript 연구 도구와 새 패키지를 모두 포함하고, 각 환경에 해당하는 규칙만 적용하는지 확인한다. 생성물과 의존성 폴더는 검사 대상에서 제외한다.
+- 대표 `.js`, `.ts`, `.tsx` 파일로 형식 검사, ESLint 검사와 타입 검사를 각각 실행한다. 의도적인 규칙 위반과 타입 오류가 해당 검사에서 감지되는지 확인한 뒤 제거한다.
+
+설정 방법과 지원 범위는 [Next.js ESLint 공식 문서](https://nextjs.org/docs/app/api-reference/config/eslint)와 [Prettier 지원 언어](https://prettier.io/docs/)에서 확인한다.
+
 ### 우선순위
 
-| 순서 | 결과 | 담당 Issue | 선행 작업 |
-| ---: | --- | --- | --- |
-| 1 | 기술 스택, 패키지 매니저와 프로젝트 구조 결정 | [#8](https://github.com/nickwildee/nextquest/issues/8) | 없음 |
-| 2 | pnpm·Next.js 스캐폴딩과 Jest 기반의 빠른 내부 검증 루프 | [#11](https://github.com/nickwildee/nextquest/issues/11) | #8 |
-| 3 | 도메인 스키마와 golden fixture를 사용한 핵심 규칙 검증 | [#12](https://github.com/nickwildee/nextquest/issues/12) | #11, 상위 영역·하위 특성 분류표 확정 |
-| 4 | Storybook·MSW를 사용한 컴포넌트 상태와 API mock 경계 | [#18](https://github.com/nickwildee/nextquest/issues/18) | #11, #12 |
-| 5 | Playwright smoke test와 GitHub Actions 외부 검증 루프 | [#19](https://github.com/nickwildee/nextquest/issues/19) | #11, #12, #18 |
+| 순서 | 결과                                                    | 담당 Issue                                               | 선행 작업                            |
+| ---: | ------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------ |
+|    1 | 기술 스택, 패키지 매니저와 프로젝트 구조 결정           | [#8](https://github.com/nickwildee/nextquest/issues/8)   | 없음                                 |
+|    2 | pnpm·Next.js 스캐폴딩과 Jest 기반의 빠른 내부 검증 루프 | [#11](https://github.com/nickwildee/nextquest/issues/11) | #8                                   |
+|    3 | 도메인 스키마와 golden fixture를 사용한 핵심 규칙 검증  | [#12](https://github.com/nickwildee/nextquest/issues/12) | #11, 상위 영역·하위 특성 분류표 확정 |
+|    4 | Storybook·MSW를 사용한 컴포넌트 상태와 API mock 경계    | [#18](https://github.com/nickwildee/nextquest/issues/18) | #11, #12                             |
+|    5 | Playwright smoke test와 GitHub Actions 외부 검증 루프   | [#19](https://github.com/nickwildee/nextquest/issues/19) | #11, #12, #18                        |
 
 ### 완료 조건
 
@@ -215,17 +228,17 @@ M2에서 검증한 대표 사용자 흐름을 실제 검수 데이터와 사용�
 
 ## 주요 위험과 대응 방향
 
-| 위험 | 영향 | 대응 방향 |
-| --- | --- | --- |
-| Steam 라이브러리 비공개 또는 새 계정 | 자동 온보딩 실패 | Steam 등록 게임의 수동 등록 경로 제공 |
+| 위험                                    | 영향                                      | 대응 방향                                                      |
+| --------------------------------------- | ----------------------------------------- | -------------------------------------------------------------- |
+| Steam 라이브러리 비공개 또는 새 계정    | 자동 온보딩 실패                          | Steam 등록 게임의 수동 등록 경로 제공                          |
 | 비교 기준 게임 자격 또는 평가 완료 부족 | 개인화에 필요한 취향 범위를 확보하지 못함 | 기본 분석은 유지하고 3개까지 필요한 완료 게임 수와 조건을 안내 |
-| 리뷰 표본 편향 | 일부 의견을 전체 여론처럼 표현 | API 전체 모수와 분석 표본을 분리하고 특성별 분모를 공개 |
-| 리뷰 구조화 오류 | 잘못된 특성을 사용자 취향과 비교 | 통제된 분류표, 원문 범위, 사람 정답 데이터와 직접 검수 사용 |
-| 관련 리뷰가 부족하거나 충돌 | 과도한 확신 제공 | 하위 특성별 `판단 불가`로 표시하고 종합 점수를 제공하지 않음 |
-| 관련 리뷰를 찾지 못함 | 근거 없는 개인화 결과 생성 | 해당 하위 특성을 `판단 불가`로 표시하고 부족한 근거를 안내 |
-| 과거 경험 평가 수정 | 이전 취향을 반영한 결과가 남음 | 개인화 결과를 최신 입력으로 다시 계산 |
-| 지원 게임 범위 확대 | 검수 품질 저하와 일정 지연 | 후보 1개 → 2~3개 → 검수 목록 8개 순서로 확대 |
-| 외부 데이터 출처 확대 | 크롤링·정규화·유지보수 증가 | MVP는 Steam 공식 정보와 Steam 리뷰로 제한 |
+| 리뷰 표본 편향                          | 일부 의견을 전체 여론처럼 표현            | API 전체 모수와 분석 표본을 분리하고 특성별 분모를 공개        |
+| 리뷰 구조화 오류                        | 잘못된 특성을 사용자 취향과 비교          | 통제된 분류표, 원문 범위, 사람 정답 데이터와 직접 검수 사용    |
+| 관련 리뷰가 부족하거나 충돌             | 과도한 확신 제공                          | 하위 특성별 `판단 불가`로 표시하고 종합 점수를 제공하지 않음   |
+| 관련 리뷰를 찾지 못함                   | 근거 없는 개인화 결과 생성                | 해당 하위 특성을 `판단 불가`로 표시하고 부족한 근거를 안내     |
+| 과거 경험 평가 수정                     | 이전 취향을 반영한 결과가 남음            | 개인화 결과를 최신 입력으로 다시 계산                          |
+| 지원 게임 범위 확대                     | 검수 품질 저하와 일정 지연                | 후보 1개 → 2~3개 → 검수 목록 8개 순서로 확대                   |
+| 외부 데이터 출처 확대                   | 크롤링·정규화·유지보수 증가               | MVP는 Steam 공식 정보와 Steam 리뷰로 제한                      |
 
 ## 검증 순서
 

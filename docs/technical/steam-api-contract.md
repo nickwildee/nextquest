@@ -39,16 +39,16 @@ GET https://store.steampowered.com/appreviews/<appid>?json=1
 
 ### 주요 요청 조건
 
-| 파라미터 | 역할 |
-| --- | --- |
-| `filter` | `recent`: 작성 시각순, `updated`: 수정 시각순, `all`: `day_range`의 이동 구간을 사용하는 유용성순 |
-| `language` | Steam 리뷰 언어 코드 또는 모든 언어 |
-| `day_range` | `filter=all`에서 유용한 리뷰를 찾는 과거 일수 범위. 최대 365이며 `recent`·`updated`의 기간 필터가 아님 |
-| `cursor` | 첫 페이지는 `*`, 이후는 응답의 커서. 쿼리 문자열에 넣을 때 URL 인코딩 |
-| `review_type` | 전체, 긍정 또는 부정 리뷰 |
-| `purchase_type` | Steam 구매 또는 전체 구매 유형 |
-| `num_per_page` | 한 페이지의 리뷰 수, 최대 100개 |
-| `filter_offtopic_activity` | Steam이 비정상적 리뷰 활동으로 분류한 기간 포함 여부 |
+| 파라미터                   | 역할                                                                                                   |
+| -------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `filter`                   | `recent`: 작성 시각순, `updated`: 수정 시각순, `all`: `day_range`의 이동 구간을 사용하는 유용성순      |
+| `language`                 | Steam 리뷰 언어 코드 또는 모든 언어                                                                    |
+| `day_range`                | `filter=all`에서 유용한 리뷰를 찾는 과거 일수 범위. 최대 365이며 `recent`·`updated`의 기간 필터가 아님 |
+| `cursor`                   | 첫 페이지는 `*`, 이후는 응답의 커서. 쿼리 문자열에 넣을 때 URL 인코딩                                  |
+| `review_type`              | 전체, 긍정 또는 부정 리뷰                                                                              |
+| `purchase_type`            | Steam 구매 또는 전체 구매 유형                                                                         |
+| `num_per_page`             | 한 페이지의 리뷰 수, 최대 100개                                                                        |
+| `filter_offtopic_activity` | Steam이 비정상적 리뷰 활동으로 분류한 기간 포함 여부                                                   |
 
 전체 모수와 표본을 비교하려면 요청 조건을 결과와 함께 저장해야 한다. 조건이 다르면 `total_reviews`도 다른 모집단을 의미한다.
 
