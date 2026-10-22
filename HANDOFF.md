@@ -1,8 +1,8 @@
 # NextQuest 작업 인수인계
 
-> 마지막 검증: 2026-10-19 (Asia/Seoul)
+> 마지막 검증: 2026-10-22 (Asia/Seoul)
 >
-> 검토 기준: `origin/main`의 `f949a1068c7955e0f2ebb534e8086f41fe296444` (`docs: 구매 판단 저장 접근 정책과 M2 검증 조건 정렬 (#32)`)
+> 검토 기준: `origin/main`의 `ff08adb213ab15883a77490882bb508c1cdcf9b1` (`chore: 프로젝트 공통 ESLint·Prettier 설정 (#39)`)
 >
 > 이 문서는 다른 컴퓨터나 새 대화에서 작업을 재개하기 위한 운영 문서다. 제품의 현재 동작과 범위는 `docs/`가 책임지며, 상태가 달라졌다면 저장소와 GitHub를 다시 확인해 이 문서를 갱신한다.
 
@@ -60,21 +60,22 @@ README는 진입점이고 세부 요구사항을 소유하지 않는다. 문서�
 
 ## 현재 확인된 상태
 
-| 구분               | 상태    | 근거                                                                                                                                                                                                           |
-| ------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| M0 제품 정의       | 완료    | 제품 문서, [PR #29](https://github.com/nickwildee/nextquest/pull/29), [PR #32](https://github.com/nickwildee/nextquest/pull/32)                                                                                |
-| M1 기술 결정       | 완료    | [Issue #8](https://github.com/nickwildee/nextquest/issues/8), [Discussion #9](https://github.com/nickwildee/nextquest/discussions/9), [Discussion #10](https://github.com/nickwildee/nextquest/discussions/10) |
-| 애플리케이션 구현  | 미착수  | `package.json`, workspace, `apps/web`, `packages/domain`, lockfile과 테스트 설정이 없음                                                                                                                        |
-| M1 구현            | 미착수  | Issue #11, #12, #18, #19가 열려 있음                                                                                                                                                                           |
-| 분류표 선행 연구   | 진행 중 | [Issue #28](https://github.com/nickwildee/nextquest/issues/28), [Issue #33](https://github.com/nickwildee/nextquest/issues/33); 수동 실험 방식을 확정했고 분석 실행 코드는 저장소에 없음                       |
-| Steam·인증·DB 연동 | 미착수  | fixture MVP의 제외 범위                                                                                                                                                                                        |
-| 실제 리뷰 API 분석 | 미실행  | 이 연구에서 유료 모델 호출·실제 토큰 사용량 측정·사람 정답 대비 모델 품질 평가를 실행하지 않음                                                                                                                 |
+| 구분                     | 상태    | 근거                                                                                                                                                                                                           |
+| ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| M0 제품 정의             | 완료    | 제품 문서, [PR #29](https://github.com/nickwildee/nextquest/pull/29), [PR #32](https://github.com/nickwildee/nextquest/pull/32)                                                                                |
+| M1 기술 결정             | 완료    | [Issue #8](https://github.com/nickwildee/nextquest/issues/8), [Discussion #9](https://github.com/nickwildee/nextquest/discussions/9), [Discussion #10](https://github.com/nickwildee/nextquest/discussions/10) |
+| 애플리케이션 구현        | 미착수  | workspace, `apps/web`, `packages/domain`과 앱 테스트 설정이 없음                                                                                                                                               |
+| M1 구현                  | 진행 중 | 공통 개발 도구 설정은 완료; Issue #11, #12, #18, #19는 열려 있음                                                                                                                                               |
+| 공통 코드 검사·형식 정리 | 완료    | [PR #39](https://github.com/nickwildee/nextquest/pull/39): 루트 `package.json`, lockfile, ESLint·Prettier, VS Code 저장 시 정리 설정                                                                           |
+| 분류표 선행 연구         | 진행 중 | [Issue #28](https://github.com/nickwildee/nextquest/issues/28), [Issue #33](https://github.com/nickwildee/nextquest/issues/33); 수동 실험 방식을 확정했고 연구 도구 코드는 원격 main에 미반영                  |
+| Steam·인증·DB 연동       | 미착수  | fixture MVP의 제외 범위                                                                                                                                                                                        |
+| 실제 리뷰 API 분석       | 미실행  | 이 연구에서 유료 모델 호출·실제 토큰 사용량 측정·사람 정답 대비 모델 품질 평가를 실행하지 않음                                                                                                                 |
 
-현재 저장소에는 문서와 GitHub 템플릿만 있다. 따라서 `pnpm install`, `pnpm dev`, `pnpm verify` 또는 애플리케이션 테스트를 아직 실행할 수 없다. 이 명령들은 Issue #11이 완료되고 실제 스크립트가 생긴 뒤 이 문서에 추가한다.
+루트 개발 도구의 설치와 lint·format 검증이 가능하다. 실행 절차는 [현재 가능한 검증](#현재-가능한-검증)을 따른다. `dev`, `typecheck`, `test`, `build`, `verify` 스크립트와 애플리케이션은 아직 없으며 Issue #11에서 구성한다.
 
 기존 실제 리뷰 검수 자료는 저장소 복제에 포함되지 않는다. 오프라인 구조 검사와 실제 모델의 의미 분석 품질 검증은 구분한다.
 
-문서 변경 전 확인한 원격 main과 로컬 기준 커밋은 일치했다. 열린 구현 작업은 GitHub에서 다시 확인한다. #31은 CI 구축 후 main 필수 상태 검사를 연결하는 후속 작업이며, 이 인수인계의 반영은 #34가 담당한다.
+문서 변경 전 확인한 원격 main과 작업 브랜치의 기준 커밋은 일치했다. #38은 완료되었고 #11, #12, #18, #19, #28, #31, #33은 열려 있다. #31은 CI 구축 후 main 필수 상태 검사를 연결하는 후속 작업이며, 이 인수인계 갱신은 #40이 담당한다.
 
 현재 상태를 다시 확인하는 최소 명령은 다음과 같다.
 
@@ -120,15 +121,17 @@ Issue 상태와 선행 조건이 바뀌면 이 표보다 GitHub의 최신 본문
 
 [Issue #33](https://github.com/nickwildee/nextquest/issues/33)의 수동 리뷰 분석 도구와 소규모 검증을 진행한다. 연구 도구는 M1의 TypeScript·Jest·pnpm 정책을 바꾸지 않는다.
 
-첫 학습 과제는 JavaScript `.js`로 합성 리뷰 한 개가 담긴 JSON 파일을 읽고, 문자열을 JavaScript 객체로 변환한 뒤 리뷰 본문을 콘솔에 출력하는 것이다. 사용자가 다음 파일을 직접 작성한다. 아래 파일은 아직 없으며 구현할 대상이다.
+원격 main에는 연구 도구 코드가 반영되지 않았다. 검증 시점의 로컬 작업 트리에는 `tools/review-pilot/`의 학습 코드와 `.vscode/launch.json`이 미추적 상태로 존재하며, PR #39에는 포함되지 않았다. 다른 컴퓨터에서 저장소를 복제해도 이 파일들은 따라오지 않는다. #33을 재개할 때 기존 파일과 사용자의 학습 진행을 먼저 확인하고 덮어쓰거나 처음부터 다시 작성하도록 안내하지 않는다.
 
-| 구현할 파일                       | 첫 단계의 책임                                                            |
+첫 학습 단계의 목표는 JavaScript `.js`로 합성 리뷰 JSON 파일을 읽고, 문자열을 객체로 변환한 뒤 본문을 출력하는 것이다. 아래 표는 첫 단계의 파일별 책임이며 전체 연구 도구의 완료 상태를 의미하지 않는다.
+
+| 첫 단계 파일                      | 첫 단계의 책임                                                            |
 | --------------------------------- | ------------------------------------------------------------------------- |
 | `tools/review-pilot/package.json` | 해당 폴더의 `.js`를 ES 모듈로 실행하도록 `type`을 `module`로 지정         |
 | `tools/review-pilot/review.json`  | 연습용 `reviewId`, `text`를 가진 합성 리뷰 한 개; 최종 제품 스키마가 아님 |
 | `tools/review-pilot/main.js`      | 파일 읽기, JSON 변환과 본문 출력                                          |
 
-문서 작업을 마친 뒤 최신 main과 #33의 기존 브랜치·PR을 확인하고 구현 브랜치에서 시작한다. 첫 과제에는 네트워크, API 키, 실제 리뷰 원문과 추가 패키지가 필요하지 않다. 본문이 그대로 출력되고 사용자가 파일 읽기와 JSON 변환의 차이를 설명할 수 있으면 첫 단계를 완료한다. 관련 개념은 `node:fs`의 `readFileSync`, UTF-8 문자열, `JSON.parse`, `console.log`다.
+최신 main과 #33의 기존 브랜치·PR, 로컬 학습 파일을 확인한 뒤 해당 구현 브랜치에서 이어간다. 첫 과제에는 네트워크, API 키, 실제 리뷰 원문과 추가 패키지가 필요하지 않다. 본문이 그대로 출력되고 사용자가 파일 읽기와 JSON 변환의 차이를 설명할 수 있으면 첫 단계를 완료한다. 관련 개념은 `node:fs`의 `readFileSync`, UTF-8 문자열, `JSON.parse`, `console.log`다.
 
 이후 입력 검증, 원문·근거 ID 보존, 분석 요청 준비, 실제 사용량 기록과 사람 정답 대비 품질 비교를 작은 단계로 구현한다. 외부 호출 없이 입력과 요청 준비를 검증한 뒤 유료 실험을 진행한다. 여러 게임의 특성 묶기는 개별 리뷰 추출 품질을 확인한 뒤 검증한다. 아직 없는 실행 파일이나 명령을 존재하는 것으로 안내하지 않는다.
 
@@ -141,13 +144,13 @@ Issue 상태와 선행 조건이 바뀌면 이 표보다 GitHub의 최신 본문
 
 ### 별도로 유지되는 M1 구현 순서
 
-M1의 첫 구현 작업은 [Issue #11](https://github.com/nickwildee/nextquest/issues/11)이다. #33의 연구는 #11의 선행 조건이나 완료 증거가 아니다.
+공통 개발 도구 설정 이후 M1의 다음 작업은 [Issue #11](https://github.com/nickwildee/nextquest/issues/11)이다. 기존 루트 설정과 lockfile을 확장해 workspace·웹 앱·테스트 환경을 구성한다. #33의 연구는 #11의 선행 조건이나 완료 증거가 아니다.
 
 1. 최신 `main`, 열린 PR과 Issue #11 본문을 다시 확인한다.
 2. 같은 작업을 진행 중인 브랜치나 PR이 없을 때 최신 `origin/main`에서 Issue #11 전용 브랜치를 만든다.
-3. Issue에 기록된 Node.js, pnpm, Next.js와 도구 버전을 설치 직전 공식 문서에서 다시 확인한다.
+3. #11에 갱신된 Node.js·pnpm·ESLint·Prettier 버전 기준과 루트 `package.json`을 확인한다. Next.js와 관련 도구의 호환 범위를 설치 직전 공식 문서에서 다시 확인한다.
 4. 버전을 바꿔야 한다면 설치부터 하지 말고 확인한 사실, 영향과 대안을 사용자에게 보고한다.
-5. Issue #11의 포함 범위만 구현하고 `packages/domain`, Storybook, MSW, Playwright와 CI를 미리 추가하지 않는다.
+5. [TypeScript·React·Next.js 도입 체크리스트](docs/product/development-plan.md#typescriptreactnextjs-도입-시-도구-설정)에 따라 기존 검사 설정을 확장한다. Issue #11의 포함 범위만 구현하고 `packages/domain`, Storybook, MSW, Playwright와 CI를 미리 추가하지 않는다.
 6. 새 환경에서 frozen install, 개발 서버, format, lint, typecheck, Jest, build와 통합 검증 명령을 확인한다.
 
 새 브랜치명 예시는 `codex/chore/11-pnpm-next-scaffold`다. 같은 이름이 이미 존재하면 덮어쓰거나 강제로 재사용하지 않는다.
@@ -213,7 +216,21 @@ production 빌드에서는 MSW worker를 시작하지 않음
 
 ## 현재 가능한 검증
 
-애플리케이션 코드가 생기기 전에는 문서와 저장소 상태만 검증한다.
+Node.js 24.22.1과 pnpm 10.18.1에서 루트 개발 도구 설치와 검사를 확인한다. pnpm 버전은 `package.json`의 `packageManager`에 기록되어 있고, Node.js 버전의 저장소 고정은 #11의 남은 작업이다.
+
+새 체크아웃의 루트에서 다음 명령을 실행한다. `--frozen-lockfile`은 lockfile 변경을 허용하지 않고, `--ignore-scripts`는 의존성 설치 스크립트를 실행하지 않는다. 이 절차는 현재 개발 도구 구성에 대해 검증했으며, 앱 도입 후에는 필요한 빌드 스크립트를 별도로 확인한다.
+
+```bash
+node --version
+pnpm --version
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm lint
+pnpm format:check
+```
+
+`pnpm format`은 파일을 실제로 수정하므로 형식 정리가 필요할 때 실행하고 diff를 확인한다. VS Code에서는 Prettier(`esbenp.prettier-vscode`)와 ESLint(`dbaeumer.vscode-eslint`) 확장을 설치한다. 프로젝트 설정은 직접 저장할 때 형식 정리와 ESLint 자동 수정을 실행한다. 사용자 설정에 구형 `eslint.experimental.useFlatConfig` 옵션이 남아 있으면 제거한다. 오류 표시와 자동 수정은 사용자 환경에서 확인했다.
+
+문서와 저장소 상태는 다음 명령으로 확인한다.
 
 ```bash
 git status --short --branch
@@ -222,10 +239,12 @@ git grep -n -E '6개 경험 요[소]|6개 요소 필[수]|각 요[소].*좋았�
 git grep -n -E '^(<<<<<<<|=======|>>>>>>>)' -- .
 ```
 
-폐기된 개인화 규칙과 충돌 표시는 검색 결과가 없어야 한다. 로컬 Markdown 링크와 코드 펜스의 짝도 확인한다. Issue #11이 병합되면 이 구역에 실제 설치·실행·공통 검증 명령을 추가한다.
+폐기된 개인화 규칙과 충돌 표시는 검색 결과가 없어야 한다. 로컬 Markdown 링크와 코드 펜스의 짝도 확인한다. 앱 실행·타입 검사·테스트·빌드·통합 검증 명령은 #11에서 실제 구성이 완료된 뒤 추가한다.
 
 ## 주요 기록
 
+- [Issue #40: 개발 도구 설정 완료 후 인수인계 갱신](https://github.com/nickwildee/nextquest/issues/40)
+- [PR #39: 프로젝트 공통 ESLint·Prettier 설정](https://github.com/nickwildee/nextquest/pull/39)
 - [Issue #34: 직접 구현 협업 원칙과 수동 리뷰 연구 인수인계](https://github.com/nickwildee/nextquest/issues/34)
 - [Issue #33: 수동 리뷰 분석 파일럿과 토큰·품질 검증 도구](https://github.com/nickwildee/nextquest/issues/33)
 - [Issue #28: 개인화 계약과 분류표 확정](https://github.com/nickwildee/nextquest/issues/28)
