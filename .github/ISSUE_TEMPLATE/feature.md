@@ -1,7 +1,7 @@
 ---
 name: Feature
 about: 새로운 기능을 제안하거나 구현합니다.
-title: "feature: "
+title: 'feature: '
 labels: feature
 ---
 

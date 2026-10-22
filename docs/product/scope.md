@@ -102,16 +102,16 @@ Steam 연동, 운영 인증, 데이터베이스와 리뷰 처리 자동화는 �
 
 다음 8개 게임은 실제 데이터 적용을 검수할 초기 목록이다. 내부 프로토타입은 한 후보 게임으로 전체 흐름을 연결한 뒤 2~3개 후보 게임으로 구조를 확인하고, 전체 목록 적용은 이후 단계에서 진행한다.
 
-| 게임 | Steam App ID | 공식 상점 |
-| --- | ---: | --- |
-| DARK SOULS III | `374320` | [Steam](https://store.steampowered.com/app/374320/) |
-| ELDEN RING | `1245620` | [Steam](https://store.steampowered.com/app/1245620/) |
-| Black Myth: Wukong | `2358720` | [Steam](https://store.steampowered.com/app/2358720/) |
-| Sekiro: Shadows Die Twice | `814380` | [Steam](https://store.steampowered.com/app/814380/) |
-| Nioh 3 | `3681010` | [Steam](https://store.steampowered.com/app/3681010/) |
-| Lies of P | `1627720` | [Steam](https://store.steampowered.com/app/1627720/) |
-| Stellar Blade | `3489700` | [Steam](https://store.steampowered.com/app/3489700/) |
-| ELDEN RING NIGHTREIGN | `2622380` | [Steam](https://store.steampowered.com/app/2622380/) |
+| 게임                      | Steam App ID | 공식 상점                                            |
+| ------------------------- | -----------: | ---------------------------------------------------- |
+| DARK SOULS III            |     `374320` | [Steam](https://store.steampowered.com/app/374320/)  |
+| ELDEN RING                |    `1245620` | [Steam](https://store.steampowered.com/app/1245620/) |
+| Black Myth: Wukong        |    `2358720` | [Steam](https://store.steampowered.com/app/2358720/) |
+| Sekiro: Shadows Die Twice |     `814380` | [Steam](https://store.steampowered.com/app/814380/)  |
+| Nioh 3                    |    `3681010` | [Steam](https://store.steampowered.com/app/3681010/) |
+| Lies of P                 |    `1627720` | [Steam](https://store.steampowered.com/app/1627720/) |
+| Stellar Blade             |    `3489700` | [Steam](https://store.steampowered.com/app/3489700/) |
+| ELDEN RING NIGHTREIGN     |    `2622380` | [Steam](https://store.steampowered.com/app/2622380/) |
 
 ## 제외 범위
 

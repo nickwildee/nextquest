@@ -1,7 +1,7 @@
 ---
 name: Bug
 about: 정상적으로 동작하지 않는 문제를 수정합니다.
-title: "bug: "
+title: 'bug: '
 labels: bug
 ---
 

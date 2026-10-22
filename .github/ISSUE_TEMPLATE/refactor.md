@@ -1,7 +1,7 @@
 ---
 name: Refactor
 about: 기존 기능의 동작을 유지하면서 코드 구조를 개선합니다.
-title: "refactor: "
+title: 'refactor: '
 labels: refactor
 ---
 

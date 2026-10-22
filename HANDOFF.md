@@ -60,15 +60,15 @@ README는 진입점이고 세부 요구사항을 소유하지 않는다. 문서�
 
 ## 현재 확인된 상태
 
-| 구분 | 상태 | 근거 |
-| --- | --- | --- |
-| M0 제품 정의 | 완료 | 제품 문서, [PR #29](https://github.com/nickwildee/nextquest/pull/29), [PR #32](https://github.com/nickwildee/nextquest/pull/32) |
-| M1 기술 결정 | 완료 | [Issue #8](https://github.com/nickwildee/nextquest/issues/8), [Discussion #9](https://github.com/nickwildee/nextquest/discussions/9), [Discussion #10](https://github.com/nickwildee/nextquest/discussions/10) |
-| 애플리케이션 구현 | 미착수 | `package.json`, workspace, `apps/web`, `packages/domain`, lockfile과 테스트 설정이 없음 |
-| M1 구현 | 미착수 | Issue #11, #12, #18, #19가 열려 있음 |
-| 분류표 선행 연구 | 진행 중 | [Issue #28](https://github.com/nickwildee/nextquest/issues/28), [Issue #33](https://github.com/nickwildee/nextquest/issues/33); 수동 실험 방식을 확정했고 분석 실행 코드는 저장소에 없음 |
-| Steam·인증·DB 연동 | 미착수 | fixture MVP의 제외 범위 |
-| 실제 리뷰 API 분석 | 미실행 | 이 연구에서 유료 모델 호출·실제 토큰 사용량 측정·사람 정답 대비 모델 품질 평가를 실행하지 않음 |
+| 구분               | 상태    | 근거                                                                                                                                                                                                           |
+| ------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| M0 제품 정의       | 완료    | 제품 문서, [PR #29](https://github.com/nickwildee/nextquest/pull/29), [PR #32](https://github.com/nickwildee/nextquest/pull/32)                                                                                |
+| M1 기술 결정       | 완료    | [Issue #8](https://github.com/nickwildee/nextquest/issues/8), [Discussion #9](https://github.com/nickwildee/nextquest/discussions/9), [Discussion #10](https://github.com/nickwildee/nextquest/discussions/10) |
+| 애플리케이션 구현  | 미착수  | `package.json`, workspace, `apps/web`, `packages/domain`, lockfile과 테스트 설정이 없음                                                                                                                        |
+| M1 구현            | 미착수  | Issue #11, #12, #18, #19가 열려 있음                                                                                                                                                                           |
+| 분류표 선행 연구   | 진행 중 | [Issue #28](https://github.com/nickwildee/nextquest/issues/28), [Issue #33](https://github.com/nickwildee/nextquest/issues/33); 수동 실험 방식을 확정했고 분석 실행 코드는 저장소에 없음                       |
+| Steam·인증·DB 연동 | 미착수  | fixture MVP의 제외 범위                                                                                                                                                                                        |
+| 실제 리뷰 API 분석 | 미실행  | 이 연구에서 유료 모델 호출·실제 토큰 사용량 측정·사람 정답 대비 모델 품질 평가를 실행하지 않음                                                                                                                 |
 
 현재 저장소에는 문서와 GitHub 템플릿만 있다. 따라서 `pnpm install`, `pnpm dev`, `pnpm verify` 또는 애플리케이션 테스트를 아직 실행할 수 없다. 이 명령들은 Issue #11이 완료되고 실제 스크립트가 생긴 뒤 이 문서에 추가한다.
 
@@ -104,13 +104,13 @@ gh issue list --milestone "M1 — 개발 기반 구축" --state all
 
 M1은 아래 순서로 진행한다. 각 Issue는 별도 브랜치와 PR로 처리한다.
 
-| 순서 | Issue | 결과 | 시작 조건 |
-| ---: | --- | --- | --- |
-| 완료 | [#8 기술 기반 결정](https://github.com/nickwildee/nextquest/issues/8) | pnpm workspace, Next.js, 테스트 도구와 버전 정책 | 완료됨 |
-| 1 | [#11 pnpm·Next.js 스캐폴딩](https://github.com/nickwildee/nextquest/issues/11) | `apps/web`, 공통 명령, Jest와 lockfile | 바로 시작 가능 |
-| 2 | [#12 도메인 스키마와 golden fixture](https://github.com/nickwildee/nextquest/issues/12) | `packages/domain`, Zod 계약과 순수 규칙 테스트 | #11 병합, 상위 영역·하위 특성 분류표 확정 후 |
-| 3 | [#18 Storybook·MSW 하네스](https://github.com/nickwildee/nextquest/issues/18) | 컴포넌트 상태, 접근성과 공용 HTTP mock | #11, #12 병합 후 |
-| 4 | [#19 Playwright·GitHub Actions](https://github.com/nickwildee/nextquest/issues/19) | 브라우저 smoke test와 PR 검증 | #11, #12, #18 병합 후 |
+| 순서 | Issue                                                                                   | 결과                                             | 시작 조건                                    |
+| ---: | --------------------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------- |
+| 완료 | [#8 기술 기반 결정](https://github.com/nickwildee/nextquest/issues/8)                   | pnpm workspace, Next.js, 테스트 도구와 버전 정책 | 완료됨                                       |
+|    1 | [#11 pnpm·Next.js 스캐폴딩](https://github.com/nickwildee/nextquest/issues/11)          | `apps/web`, 공통 명령, Jest와 lockfile           | 바로 시작 가능                               |
+|    2 | [#12 도메인 스키마와 golden fixture](https://github.com/nickwildee/nextquest/issues/12) | `packages/domain`, Zod 계약과 순수 규칙 테스트   | #11 병합, 상위 영역·하위 특성 분류표 확정 후 |
+|    3 | [#18 Storybook·MSW 하네스](https://github.com/nickwildee/nextquest/issues/18)           | 컴포넌트 상태, 접근성과 공용 HTTP mock           | #11, #12 병합 후                             |
+|    4 | [#19 Playwright·GitHub Actions](https://github.com/nickwildee/nextquest/issues/19)      | 브라우저 smoke test와 PR 검증                    | #11, #12, #18 병합 후                        |
 
 Issue 상태와 선행 조건이 바뀌면 이 표보다 GitHub의 최신 본문을 우선하고 `HANDOFF.md`를 함께 갱신한다.
 
@@ -122,11 +122,11 @@ Issue 상태와 선행 조건이 바뀌면 이 표보다 GitHub의 최신 본문
 
 첫 학습 과제는 JavaScript `.js`로 합성 리뷰 한 개가 담긴 JSON 파일을 읽고, 문자열을 JavaScript 객체로 변환한 뒤 리뷰 본문을 콘솔에 출력하는 것이다. 사용자가 다음 파일을 직접 작성한다. 아래 파일은 아직 없으며 구현할 대상이다.
 
-| 구현할 파일 | 첫 단계의 책임 |
-| --- | --- |
-| `tools/review-pilot/package.json` | 해당 폴더의 `.js`를 ES 모듈로 실행하도록 `type`을 `module`로 지정 |
-| `tools/review-pilot/review.json` | 연습용 `reviewId`, `text`를 가진 합성 리뷰 한 개; 최종 제품 스키마가 아님 |
-| `tools/review-pilot/main.js` | 파일 읽기, JSON 변환과 본문 출력 |
+| 구현할 파일                       | 첫 단계의 책임                                                            |
+| --------------------------------- | ------------------------------------------------------------------------- |
+| `tools/review-pilot/package.json` | 해당 폴더의 `.js`를 ES 모듈로 실행하도록 `type`을 `module`로 지정         |
+| `tools/review-pilot/review.json`  | 연습용 `reviewId`, `text`를 가진 합성 리뷰 한 개; 최종 제품 스키마가 아님 |
+| `tools/review-pilot/main.js`      | 파일 읽기, JSON 변환과 본문 출력                                          |
 
 문서 작업을 마친 뒤 최신 main과 #33의 기존 브랜치·PR을 확인하고 구현 브랜치에서 시작한다. 첫 과제에는 네트워크, API 키, 실제 리뷰 원문과 추가 패키지가 필요하지 않다. 본문이 그대로 출력되고 사용자가 파일 읽기와 JSON 변환의 차이를 설명할 수 있으면 첫 단계를 완료한다. 관련 개념은 `node:fs`의 `readFileSync`, UTF-8 문자열, `JSON.parse`, `console.log`다.
 
